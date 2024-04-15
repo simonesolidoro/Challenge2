@@ -29,6 +29,9 @@ namespace algebra{
            // compress metod popola vettori per rappresentazione CSR
            void compress();
 
+           // uncompress metod popola Dati e svuota vettori (CSR->COOmap)
+           void uncompress();
+
            //print vettori CSR
            void printvett();
        

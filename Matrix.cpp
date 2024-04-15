@@ -18,12 +18,8 @@ T& Matrix<T,S>::operator() (std::size_t i,std::size_t j){
 // metodo che estrae riga k
 template <class T,StorageOrdering S>
 std::map<std::array<std::size_t,2>,T> Matrix<T,S>::estrai(const std::size_t k){
-
-    
-        std::array<std::size_t,2> indici={k};    // {k,0}
-        std::array<std::size_t,2> ind_due={k+1}; // {k+1,0} in modo che ciclo for termini appena finiti elementi con key {k,*}
         std::map<std::array<std::size_t,2>,T> riga; //map contenente riga K
-        for (auto it=Dati.lower_bound(indici); it!=Dati.lower_bound(ind_due); it++){
+        for (auto it=Dati.lower_bound({k,0}); it!=Dati.lower_bound({k+1,0}); it++){
             riga[it->first]=it->second;
         }
         return riga; 
@@ -31,32 +27,64 @@ std::map<std::array<std::size_t,2>,T> Matrix<T,S>::estrai(const std::size_t k){
 
 template <class T,StorageOrdering S>
 void Matrix<T,S>::compress(){
-    unsigned int nrow = (Dati.end()--)->first[0];//Dati.end() rida it a ultimo elemento di map, (Dati.end()--)->first[0] rida numero di righe di matrice
+    unsigned int nrow = (Dati.rbegin())->first[0];//--Dati.end() rida it a ultimo elemento di map, (--Dati.end())->first[0] rida numero di righe di matrice
     unsigned int point = 0; //per inserire posizione di primo elemento non vuoto in riga 
-    for (unsigned int i=0; i<nrow; i++){  
+    RowPoint.push_back(point); //primo elemento sempre 0;
+    for (unsigned int i=0; i<=nrow; i++){   // <= perchè in Dati.first indice riga è gia indice che parte da 0
         auto R=estrai(i);
-        if (!R.empty()){
-            RowPoint.push_back(point); // prima di for perche solo per primo elemento non vuoto
-            for (auto it=R.begin(); it!=R.end(); it++){
-                val.push_back(it->second);
-                ColIndx.push_back(it->first[1]);
-                point++;
-
+        for (auto it=R.begin(); it!=R.end(); it++){
+            val.push_back(it->second);
+            ColIndx.push_back(it->first[1]);
+            point++;
             }
-        }
+        RowPoint.push_back(point);
     }
-    RowPoint.push_back(val.size()); // RowPoint ultimo elemento è numero elemeni totali
     Dati.clear();//svuotata map di dati una volta passati da dinamic a CSR
 }
 
+template <class T,StorageOrdering S>
+void Matrix<T,S>::uncompress(){
+    for(unsigned int i=0; i<RowPoint.size()-1; i++){
+        for(unsigned int j=RowPoint[i]; j<RowPoint[i+1]; j++){
+            Dati[{i,ColIndx[j]}]=val[j];
+            std::cout<<"i: "<<i<<"j: "<<j<<std::endl;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 template <class T, StorageOrdering S>
 void Matrix<T,S>::printvett(){
+    std::cout<<"colindx: ";
     for (unsigned int x: ColIndx)
         std::cout<<x<<" ";
     std::cout<<std::endl;
+    std::cout<<"val: ";
      for (T x: val)
         std::cout<<x<<" ";
     std::cout<<std::endl;
+    std::cout<<"Roepoint: ";
      for (unsigned int x: RowPoint)
         std::cout<<x<<" ";
     std::cout<<std::endl;
