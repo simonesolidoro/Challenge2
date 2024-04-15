@@ -47,31 +47,10 @@ void Matrix<T,S>::uncompress(){
     for(unsigned int i=0; i<RowPoint.size()-1; i++){
         for(unsigned int j=RowPoint[i]; j<RowPoint[i+1]; j++){
             Dati[{i,ColIndx[j]}]=val[j];
-            std::cout<<"i: "<<i<<"j: "<<j<<std::endl;
+            // std::cout<<"i: "<<i<<"j: "<<j<<std::endl; usata per debug
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 template <class T, StorageOrdering S>
