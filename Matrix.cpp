@@ -30,4 +30,34 @@ std::map<std::array<std::size_t,2>,T> Matrix<T,S>::estrai(const std::size_t k){
         return riga; 
 }
 
+template <class T,StorageOrdering S>
+void Matrix<T,S>::compress(){
+    unsigned int nrow = (Dati.end()--)->first[0];//Dati.end() rida it a ultimo elemento di map, (Dati.end()--)->first[0] rida numero di righe di matrice
+    unsigned int point = 0; //per inserire posizione di primo elemento non vuoto in riga 
+    for (unsigned int i=0; i<nrow; i++){  
+        auto R=estrai(i);
+        if (!R.empty()){
+            RowPoint.push_back(point); // prima di for perche solo per primo elemento non vuoto
+            for (auto it=R.begin(); it!=R.end(); it++){
+                val.push_back(it->second);
+                ColIndx.push_back(it->first[1]);
+                point++;
+
+            }
+        }
+    }
+}
+
+template <class T, StorageOrdering S>
+void Matrix<T,S>::printvett(){
+    for (unsigned int x: ColIndx)
+        std::cout<<x<<" ";
+    std::cout<<std::endl;
+     for (T x: val)
+        std::cout<<x<<" ";
+    std::cout<<std::endl;
+     for (unsigned int x: RowPoint)
+        std::cout<<x<<" ";
+    std::cout<<std::endl;
+}
 

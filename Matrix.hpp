@@ -1,6 +1,7 @@
 #include<iostream>
 #include<array>
 #include<map>
+#include<vector>
 
 namespace algebra{
     enum StorageOrdering{ row,col};
@@ -9,6 +10,9 @@ namespace algebra{
     class Matrix {
         private:
             std::map<std::array<std::size_t,2>,T> Dati;
+            std::vector<std::size_t> ColIndx;
+            std::vector<std::size_t> RowPoint;
+            std::vector<T> val;
         public:
             // costruttore 
             Matrix(std::map<std::array<std::size_t,2>,T>);
@@ -21,6 +25,13 @@ namespace algebra{
            
            // estrae riga k se presente, altrimenti ridà mappa vuota
            std::map<std::array<std::size_t,2>,T> estrai(const std::size_t );
+
+           // compress metod popola vettori per rappresentazione CSR
+           void compress();
+
+           //print vettori CSR
+           void printvett();
+       
 
     };
 };

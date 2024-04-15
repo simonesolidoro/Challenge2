@@ -12,5 +12,10 @@ int main(){
     for(auto it= D.begin(); it!=D.end();it++){
         std::cout<<it->first[0]<<" "<<it->first[1]<<" value: "<<it->second<<std::endl;
     }
+
+    M.compress();
+    M.printvett();
+    
+
     return 0;
 }
