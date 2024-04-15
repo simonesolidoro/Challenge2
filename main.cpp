@@ -8,6 +8,7 @@ int main(){
     M(1,4)=41;
     M(2,3)=32;
     M(2,7)=72;
+    M(4,8)=84;
     std::map<std::array<std::size_t,2>,int> D(M.estrai(1));
     for(auto it= D.begin(); it!=D.end();it++){
         std::cout<<it->first[0]<<" "<<it->first[1]<<" value: "<<it->second<<std::endl;

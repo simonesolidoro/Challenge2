@@ -46,6 +46,7 @@ void Matrix<T,S>::compress(){
             }
         }
     }
+    RowPoint.push_back(val.size()); // RowPoint ultimo elemento è numero elemeni totali
 }
 
 template <class T, StorageOrdering S>
