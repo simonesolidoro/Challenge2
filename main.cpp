@@ -16,7 +16,6 @@ int main(){
 
     M.compress();
     M.printvett();
-    
 
     return 0;
 }

@@ -15,8 +15,7 @@ T& Matrix<T,S>::operator() (std::size_t i,std::size_t j){
     //return Dati.at({i,j});    // se posizione non presente-> out_of_range, non aggiunge 
 };
 
-
-
+// metodo che estrae riga k
 template <class T,StorageOrdering S>
 std::map<std::array<std::size_t,2>,T> Matrix<T,S>::estrai(const std::size_t k){
 
@@ -47,6 +46,7 @@ void Matrix<T,S>::compress(){
         }
     }
     RowPoint.push_back(val.size()); // RowPoint ultimo elemento è numero elemeni totali
+    Dati.clear();//svuotata map di dati una volta passati da dinamic a CSR
 }
 
 template <class T, StorageOrdering S>
