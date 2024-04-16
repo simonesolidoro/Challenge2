@@ -17,9 +17,12 @@ int main(){
         std::cout<<it->first[0]<<" "<<it->first[1]<<" value: "<<it->second<<std::endl;
     }
 
+    std::cout<<M.is_compress()<<std::endl;
     M.compress();
+    std::cout<<M.is_compress()<<std::endl;
     M.printvett();
     M.uncompress();
+    std::cout<<M.is_compress()<<std::endl;
     std::cout<<M(1,2)<<" "<<M(2,7)<<" "<<M(4,8);
     M.printvett();
 

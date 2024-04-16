@@ -32,6 +32,12 @@ namespace algebra{
            // uncompress metod popola Dati e svuota vettori (CSR->COOmap)
            void uncompress();
 
+           // check se forma compressa o uncompress: se mappa di dati vuota e vettori hanno almeno un valore->true
+           //                                        se inizializzata vuota-> false
+           //                                        se map dati popolata-> false 
+           //oss: per scontato che non si verifichi mai caso dati e vettori popolati contemporanemnte(per costruzione metodi e constructor)
+           bool is_compress()const;
+
            //print vettori CSR
            void printvett();
        

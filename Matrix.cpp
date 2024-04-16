@@ -55,6 +55,13 @@ void Matrix<T,S>::uncompress(){
     RowPoint.clear();
 }
 
+template <class T, StorageOrdering S>
+bool Matrix<T,S>::is_compress()const{
+    if(Dati.empty() & !val.empty())
+        return true;
+    else 
+        return false;
+}
 
 template <class T, StorageOrdering S>
 void Matrix<T,S>::printvett(){
