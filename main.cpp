@@ -21,6 +21,7 @@ int main(){
     M.printvett();
     M.uncompress();
     std::cout<<M(1,2)<<" "<<M(2,7)<<" "<<M(4,8);
+    M.printvett();
 
     /*
     Matrix<int,StorageOrdering::row> N;

@@ -47,9 +47,12 @@ void Matrix<T,S>::uncompress(){
     for(unsigned int i=0; i<RowPoint.size()-1; i++){
         for(unsigned int j=RowPoint[i]; j<RowPoint[i+1]; j++){
             Dati[{i,ColIndx[j]}]=val[j];
-            // std::cout<<"i: "<<i<<"j: "<<j<<std::endl; usata per debug
+        
         }
     }
+    ColIndx.clear();
+    val.clear();
+    RowPoint.clear();
 }
 
 
