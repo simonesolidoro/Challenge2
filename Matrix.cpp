@@ -11,8 +11,16 @@ Matrix<T,S>::Matrix(std::map<std::array<std::size_t,2>,T> D){
 //call operator non const(return reference per poter modificare)
 template <class T, StorageOrdering S>
 T& Matrix<T,S>::operator() (std::size_t i,std::size_t j){
-    return Dati[{i,j}];         // cosi se poszione(i,j) non presente viene aggiunta
-    //return Dati.at({i,j});    // se posizione non presente-> out_of_range, non aggiunge 
+    if (is_compress()){
+        for(unsigned int jj=RowPoint[i]; jj<RowPoint[i+1]; jj++){
+            if(ColIndx[jj]==j)
+                return val[jj];    //ritorna ref a vettore di valori in posizione i j 
+        } 
+        this->uncompress();
+        return this->operator()(i,j);  //se in forma compress chiamato () con posizione non gia diversa da 0, uncompress e ricorsive (costoso computazionalmente) 
+    }       ///!!!! problema: cosi cambia formato   
+    else 
+        return Dati[{i,j}];        // cosi se poszione(i,j) non presente viene aggiunta  
 };
 
 // metodo che estrae riga k
