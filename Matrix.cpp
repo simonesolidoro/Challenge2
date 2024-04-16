@@ -23,6 +23,23 @@ T& Matrix<T,S>::operator() (std::size_t i,std::size_t j){
         return Dati[{i,j}];        // cosi se poszione(i,j) non presente viene aggiunta  
 };
 
+// call operator const (leave user look for i,j in range of matrix)
+template <class T,StorageOrdering S>
+T Matrix<T,S>::operator() (std::size_t i,std::size_t j)const{
+    if(is_compress()){
+        for(unsigned int jj=RowPoint[i]; jj<RowPoint[i+1]; jj++){
+            if(ColIndx[jj]==j)
+                return val[jj];     
+        }
+        return 0;
+    }
+    if(Dati.find({i,j}) != Dati.end())
+        return Dati.at({i,j});
+    else
+        return 0;
+
+}
+
 // metodo che estrae riga k
 template <class T,StorageOrdering S>
 std::map<std::array<std::size_t,2>,T> Matrix<T,S>::estrai(const std::size_t k){
@@ -70,6 +87,8 @@ bool Matrix<T,S>::is_compress()const{
     else 
         return false;
 }
+
+
 
 template <class T, StorageOrdering S>
 void Matrix<T,S>::printvett(){
