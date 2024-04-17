@@ -52,7 +52,8 @@ int main(){
     //M.compress();
     std::vector<int> v={1, 2, 3};
     std::vector<int> sol;
-    sol=M*v;
+    //sol=M*v;
+    sol=operator*(M,v);
     for(auto x: sol){
         std::cout<<"soluzione"<<x<<std::endl;
         }
