@@ -5,11 +5,22 @@
 
 namespace algebra{
     enum StorageOrdering{ row,col};
+    
+    // nuovo comparison operator per map in StorageOrdering per colonne
+    struct cmp{
+        bool operator() (std::array<std::size_t,2> const & A, std::array<std::size_t,2> const & B)const{
+            if(A[1]<B[1])
+                return true;
+            if(A[1]==B[1] & A[0]<=B[0])
+                return true;
+            return false;
+        }
+    };
 
     template <class T, StorageOrdering S>
     class Matrix {
         private:
-            std::map<std::array<std::size_t,2>,T> Dati;
+            std::map<std::array<std::size_t,2>,T> Dati;  // std::map<std::array<std::size_t,2>,T,cmp> Dati;  cmp per col
             std::vector<std::size_t> ColIndx;
             std::vector<std::size_t> RowPoint;
             std::vector<T> val;

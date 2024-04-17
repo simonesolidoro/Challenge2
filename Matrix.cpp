@@ -43,11 +43,18 @@ T Matrix<T,S>::operator() (std::size_t i,std::size_t j)const{
 // metodo che estrae riga k
 template <class T,StorageOrdering S>
 std::map<std::array<std::size_t,2>,T> Matrix<T,S>::estrai(const std::size_t k){
-        std::map<std::array<std::size_t,2>,T> riga; //map contenente riga K
+    std::map<std::array<std::size_t,2>,T> riga; //map contenente riga K/o colonna
+    if(S==StorageOrdering::row){
         for (auto it=Dati.lower_bound({k,0}); it!=Dati.lower_bound({k+1,0}); it++){
             riga[it->first]=it->second;
         }
-        return riga; 
+        return riga;}
+    if(S==StorageOrdering::col){ //per ora non funziona/non provato l if messo solo per salvare come funziona (upper, {0,k}) 
+                for (auto it=Dati.upper_bound({0,k}); it!=Dati.upper_bound({0,k+1}); it++){
+            riga[it->first]=it->second;
+        }
+        return riga;}
+
 }
 
 template <class T,StorageOrdering S>
@@ -105,4 +112,5 @@ void Matrix<T,S>::printvett(){
         std::cout<<x<<" ";
     std::cout<<std::endl;
 }
+
 
