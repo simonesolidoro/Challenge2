@@ -13,7 +13,7 @@ int main(){
     std::map<std::array<std::size_t,2>,int> mapC={{{0,0},1},{{0,1},3},{{1,0},2},{{1,1},4}};
     Matrix<int,StorageOrdering::col> MC(mapC);
 
-    //estri--------->ok
+/*   //estri--------->ok
     //righe
     std::map<std::array<std::size_t,2>,int> DR(MR.estrai(1));
     for(auto it= DR.begin(); it!=DR.end();it++){
@@ -33,15 +33,15 @@ int main(){
     MR.uncompress();
     std::cout<<"è compressa (0): "<<MR.is_compress()<<std::endl;
     MR.printvett();
-
+*/
     // compress(),uncompress(),is_compress() per C 
     std::cout<<"è compressa (0): "<<MC.is_compress()<<std::endl;
     MC.compress();
     std::cout<<"è compressa (1): "<<MC.is_compress()<<std::endl;
-    MC.printvett();
+  /*MC.printvett();
     MC.uncompress();
     std::cout<<"è compressa (0): "<<MC.is_compress()<<std::endl;
-    MC.printvett();
+    MC.printvett();*/
 
 
     // call operator righe

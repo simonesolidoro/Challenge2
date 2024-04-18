@@ -22,8 +22,8 @@ namespace algebra{
         private:
             std::map<std::array<std::size_t,2>,T> DatiR;  
             std::map<std::array<std::size_t,2>,T,cmp> DatiC;  //cmp per col
-            std::vector<std::size_t> ColIndx;
-            std::vector<std::size_t> RowPoint;
+            std::vector<std::size_t> ColIndx;   //RowIndx     //OSS: nomi "azzeccati" per row_order ma usati identici in col_order 
+            std::vector<std::size_t> RowPoint;  //ColPoint
             std::vector<T> val;
         public:
             // costruttore 
