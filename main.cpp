@@ -39,9 +39,9 @@ int main(){
     MC.compress();
     std::cout<<"è compressa (1): "<<MC.is_compress()<<std::endl;
     MC.printvett();
-  /*MC.uncompress();
+    MC.uncompress();
     std::cout<<"è compressa (0): "<<MC.is_compress()<<std::endl;
-    MC.printvett();*/
+    MC.printvett();
 
 
     // call operator righe

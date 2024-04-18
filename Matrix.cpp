@@ -99,10 +99,20 @@ void Matrix<T,S>::compress(){
 
 template <class T,StorageOrdering S>
 void Matrix<T,S>::uncompress(){
-    for(unsigned int i=0; i<RowPoint.size()-1; i++){
-        for(unsigned int j=RowPoint[i]; j<RowPoint[i+1]; j++){
-            DatiR[{i,ColIndx[j]}]=val[j];
-        
+    if(S==StorageOrdering::row){
+        for(unsigned int i=0; i<RowPoint.size()-1; i++){
+            for(unsigned int j=RowPoint[i]; j<RowPoint[i+1]; j++){
+                DatiR[{i,ColIndx[j]}]=val[j];
+            
+            }
+        }
+    }
+    if(S==StorageOrdering::col){
+        for(unsigned int i=0; i<RowPoint.size()-1; i++){
+            for(unsigned int j=RowPoint[i]; j<RowPoint[i+1]; j++){
+                DatiC[{ColIndx[j],i}]=val[j];
+            
+            }
         }
     }
     ColIndx.clear();
