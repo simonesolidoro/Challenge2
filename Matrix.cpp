@@ -88,7 +88,7 @@ void Matrix<T,S>::compress(){
             auto R=estrai(i);
             for (auto it=R.begin(); it!=R.end(); it++){
                 val.push_back(it->second);
-                ColIndx.push_back(it->first[1]);
+                ColIndx.push_back(it->first[0]);
                 point++;
                 }
             RowPoint.push_back(point);

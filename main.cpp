@@ -38,8 +38,8 @@ int main(){
     std::cout<<"è compressa (0): "<<MC.is_compress()<<std::endl;
     MC.compress();
     std::cout<<"è compressa (1): "<<MC.is_compress()<<std::endl;
-  /*MC.printvett();
-    MC.uncompress();
+    MC.printvett();
+  /*MC.uncompress();
     std::cout<<"è compressa (0): "<<MC.is_compress()<<std::endl;
     MC.printvett();*/
 
