@@ -16,17 +16,30 @@ Matrix<T,S>::Matrix(std::map<std::array<std::size_t,2>,T> D){
 //call operator non const(return reference per poter modificare)
 template <class T, StorageOrdering S>
 T& Matrix<T,S>::operator() (std::size_t i,std::size_t j){
-    if (is_compress()){
-        for(unsigned int jj=RowPoint[i]; jj<RowPoint[i+1]; jj++){
-            if(ColIndx[jj]==j)
-                return val[jj];    //ritorna ref a vettore di valori in posizione i j 
+    if(S==StorageOrdering::row){
+        if (is_compress()){
+            for(unsigned int jj=RowPoint[i]; jj<RowPoint[i+1]; jj++){
+                if(ColIndx[jj]==j)
+                    return val[jj];    //ritorna ref a vettore di valori in posizione i j 
+            } 
+            // Da fare: ERRORE SE INDICI NON PRESENTI IN MATRIX   
+            //this->uncompress();           questo uncompress() rida valore non zero da modificare ma lascia matrice uncompress manca rimetterla compress 
+            }   
+        else 
+            return DatiR[{i,j}];        // cosi se poszione(i,j) non presente viene aggiunta  
+    }
+    if(S==StorageOrdering::col){
+        if (is_compress()){
+            for(unsigned int jj=RowPoint[j]; jj<RowPoint[j+1]; jj++){
+                if(ColIndx[jj]==i)
+                    return val[jj];    //ritorna ref a vettore di valori in posizione i j 
+            } // DA Fare: ERRORE SE INDICI NON PRESENTI IN MATRIX     
         } 
-        this->uncompress();
-        return this->operator()(i,j);  //se in forma compress chiamato () con posizione non gia diversa da 0, uncompress e ricorsive (costoso computazionalmente) 
-    }       ///!!!! problema: cosi cambia formato   
-    else 
-        return DatiR[{i,j}];        // cosi se poszione(i,j) non presente viene aggiunta  
-};
+        else 
+            return DatiC[{i,j}];        // cosi se poszione(i,j) non presente viene aggiunta 
+
+    }
+}
 
 // call operator const (leave user look for i,j in range of matrix)
 template <class T,StorageOrdering S>
@@ -54,7 +67,7 @@ std::map<std::array<std::size_t,2>,T> Matrix<T,S>::estrai(const std::size_t k){
             riga[it->first]=it->second;
         }
         return riga;}
-    if(S==StorageOrdering::col){ //per ora non funziona/non provato l if messo solo per salvare come funziona (upper, {0,k}) 
+    if(S==StorageOrdering::col){  
                 for (auto it=DatiC.upper_bound({0,k}); it!=DatiC.upper_bound({0,k+1}); it++){
             riga[it->first]=it->second;
         }

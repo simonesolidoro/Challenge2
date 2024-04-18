@@ -14,7 +14,7 @@ int main(){
     //std::map<std::array<std::size_t,2>,int> mapC={{{0,0},1},{{0,1},4},{{1,1},2},{{1,2},5},{{2,2},3},{{2,3},6}};
     Matrix<int,StorageOrdering::col> MC(mapC);
 
-   //estri--------->ok
+/*  //estri--------->ok
     //righe
     std::map<std::array<std::size_t,2>,int> DR(MR.estrai(1));
     for(auto it= DR.begin(); it!=DR.end();it++){
@@ -25,7 +25,8 @@ int main(){
     for(auto it= DC.begin(); it!=DC.end();it++){
         std::cout<<it->first[0]<<" "<<it->first[1]<<" value: "<<it->second<<std::endl;
     }
-/*
+*/    
+
     // compress(),uncompress(),is_compress() per R--->ok 
     std::cout<<"è compressa (0): "<<MR.is_compress()<<std::endl;
     MR.compress();
@@ -34,7 +35,7 @@ int main(){
     MR.uncompress();
     std::cout<<"è compressa (0): "<<MR.is_compress()<<std::endl;
     MR.printvett();
-*/
+
  /*   // compress(),uncompress(),is_compress() per C 
     std::cout<<"è compressa (0): "<<MC.is_compress()<<std::endl;
     MC.compress();
@@ -46,16 +47,29 @@ int main(){
 */
 
     // call operator righe
-    /*
+    
     // non const------>ok 
     Matrix<int,StorageOrdering::row> NR; //+ defaul const
     NR(0,0)=1;
     NR(0,1)=2;
     NR(1,0)=3;
     NR(1,1)=4;
-    NR.compress();
-    NR.printvett();*/
+    //NR.compress();
+    //NR.printvett();
+    
 
+/*    //call operator colonne     
+    // non const
+    Matrix<int,StorageOrdering::col> NC; //+ defaul const
+    NC(0,0)=1;
+    NC(0,1)=3;
+    NC(1,0)=2;
+    NC(1,1)=4;
+    NC.compress();
+    NC.printvett();
+    NC(1,1)=5;
+    NC.printvett();
+*/
    return 0;
 } 
 
