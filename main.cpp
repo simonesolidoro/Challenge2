@@ -11,9 +11,10 @@ int main(){
 
    //per colonne---------> ok 
     std::map<std::array<std::size_t,2>,int> mapC={{{0,0},1},{{0,1},3},{{1,0},2},{{1,1},4}};
+    //std::map<std::array<std::size_t,2>,int> mapC={{{0,0},1},{{0,1},4},{{1,1},2},{{1,2},5},{{2,2},3},{{2,3},6}};
     Matrix<int,StorageOrdering::col> MC(mapC);
 
-/*   //estri--------->ok
+   //estri--------->ok
     //righe
     std::map<std::array<std::size_t,2>,int> DR(MR.estrai(1));
     for(auto it= DR.begin(); it!=DR.end();it++){
@@ -24,7 +25,7 @@ int main(){
     for(auto it= DC.begin(); it!=DC.end();it++){
         std::cout<<it->first[0]<<" "<<it->first[1]<<" value: "<<it->second<<std::endl;
     }
-
+/*
     // compress(),uncompress(),is_compress() per R--->ok 
     std::cout<<"è compressa (0): "<<MR.is_compress()<<std::endl;
     MR.compress();
@@ -34,7 +35,7 @@ int main(){
     std::cout<<"è compressa (0): "<<MR.is_compress()<<std::endl;
     MR.printvett();
 */
-    // compress(),uncompress(),is_compress() per C 
+ /*   // compress(),uncompress(),is_compress() per C 
     std::cout<<"è compressa (0): "<<MC.is_compress()<<std::endl;
     MC.compress();
     std::cout<<"è compressa (1): "<<MC.is_compress()<<std::endl;
@@ -42,7 +43,7 @@ int main(){
     MC.uncompress();
     std::cout<<"è compressa (0): "<<MC.is_compress()<<std::endl;
     MC.printvett();
-
+*/
 
     // call operator righe
     /*
