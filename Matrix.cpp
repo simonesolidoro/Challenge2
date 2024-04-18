@@ -44,17 +44,33 @@ T& Matrix<T,S>::operator() (std::size_t i,std::size_t j){
 // call operator const (leave user look for i,j in range of matrix)
 template <class T,StorageOrdering S>
 T Matrix<T,S>::operator() (std::size_t i,std::size_t j)const{
-    if(is_compress()){
-        for(unsigned int jj=RowPoint[i]; jj<RowPoint[i+1]; jj++){
-            if(ColIndx[jj]==j)
-                return val[jj];     
+    if(S==StorageOrdering::row){
+        if(is_compress()){
+            for(unsigned int jj=RowPoint[i]; jj<RowPoint[i+1]; jj++){
+                if(ColIndx[jj]==j)
+                    return val[jj];     
+            }
+            return 0;
         }
-        return 0;
+        if(DatiR.find({i,j}) != DatiR.end())
+            return DatiR.at({i,j});
+        else
+            return 0;
     }
-    if(DatiR.find({i,j}) != DatiR.end())
-        return DatiR.at({i,j});
-    else
-        return 0;
+    if(S==StorageOrdering::col){
+        if(is_compress()){
+            for(unsigned int jj=RowPoint[j]; jj<RowPoint[j+1]; jj++){
+                if(ColIndx[jj]==i)
+                    return val[jj];     
+            }
+            return 0;
+        }
+        if(DatiC.find({i,j}) != DatiC.end())
+            return DatiC.at({i,j});
+        else
+            return 0;
+    }
+
 
 }
 

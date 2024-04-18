@@ -4,7 +4,7 @@
 using namespace algebra;
 
 int main(){
-   // prova constructor
+/*   // prova constructor
    // per righe---------> ok (compila) 
     std::map<std::array<std::size_t,2>,int> mapR={{{0,0},1},{{0,1},2},{{1,0},3},{{1,1},4}};
     Matrix<int,StorageOrdering::row> MR(mapR); 
@@ -13,7 +13,7 @@ int main(){
     std::map<std::array<std::size_t,2>,int> mapC={{{0,0},1},{{0,1},3},{{1,0},2},{{1,1},4}};
     //std::map<std::array<std::size_t,2>,int> mapC={{{0,0},1},{{0,1},4},{{1,1},2},{{1,2},5},{{2,2},3},{{2,3},6}};
     Matrix<int,StorageOrdering::col> MC(mapC);
-
+*/
 /*  //estri--------->ok
     //righe
     std::map<std::array<std::size_t,2>,int> DR(MR.estrai(1));
@@ -46,7 +46,7 @@ int main(){
     MC.printvett();
 */
 
-    // call operator righe
+ /*   // call operator righe
     // non const------>ok 
     Matrix<int,StorageOrdering::row> NR; //+ defaul const
     NR(0,0)=1;
@@ -70,6 +70,19 @@ int main(){
     NC.printvett();
     NC(1,1)=5;
     NC.printvett();
+*/
+    // call op const
+    std::map<std::array<std::size_t,2>,int> mapR={{{0,0},1},{{0,1},2},{{1,0},3},{{1,1},4}};
+    const Matrix<int,StorageOrdering::row> MR(mapR); 
+
+   //per colonne---------> ok 
+    std::map<std::array<std::size_t,2>,int> mapC={{{0,0},1},{{0,1},3},{{1,0},2},{{1,1},4}};
+    //std::map<std::array<std::size_t,2>,int> mapC={{{0,0},1},{{0,1},4},{{1,1},2},{{1,2},5},{{2,2},3},{{2,3},6}};
+    const Matrix<int,StorageOrdering::col> MC(mapC);
+    std::cout<<"m(0,0)= 1:"<<MC(0,0)<<"m(10,10)=0 :"<<MC(10,10)<<std::endl;
+    //MC.compress();
+    //std::cout<<"m(0,0)= 1:"<<MC(0,0)<<"m(10,10)= 0:"<<MC(10,10)<<std::endl;
+
 
    return 0;
 } 
