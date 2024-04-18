@@ -20,7 +20,8 @@ namespace algebra{
     template <class T, StorageOrdering S>
     class Matrix {
         private:
-            std::map<std::array<std::size_t,2>,T> Dati;  // std::map<std::array<std::size_t,2>,T,cmp> Dati;  cmp per col
+            std::map<std::array<std::size_t,2>,T> DatiR;  
+            std::map<std::array<std::size_t,2>,T,cmp> DatiC;  //cmp per col
             std::vector<std::size_t> ColIndx;
             std::vector<std::size_t> RowPoint;
             std::vector<T> val;
