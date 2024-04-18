@@ -93,7 +93,7 @@ void Matrix<T,S>::compress(){
         }
         DatiR.clear();//svuotata map di dati una volta passati da dinamic a CSR
     }
-    if(StorageOrdering::col){
+    if(S==StorageOrdering::col){
         unsigned int ncol = (DatiC.rbegin())->first[0];//--Dati.end() rida it a ultimo elemento di map, (--Dati.end())->first[0] rida numero di colonna di matrice
         unsigned int point = 0; //per inserire posizione di primo elemento non vuoto in riga 
         RowPoint.push_back(point); //primo elemento sempre 0;

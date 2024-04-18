@@ -27,7 +27,7 @@ int main(){
     }
 */    
 
-    // compress(),uncompress(),is_compress() per R--->ok 
+/*    // compress(),uncompress(),is_compress() per R--->ok 
     std::cout<<"è compressa (0): "<<MR.is_compress()<<std::endl;
     MR.compress();
     std::cout<<"è compressa (1): "<<MR.is_compress()<<std::endl;
@@ -35,7 +35,7 @@ int main(){
     MR.uncompress();
     std::cout<<"è compressa (0): "<<MR.is_compress()<<std::endl;
     MR.printvett();
-
+*/
  /*   // compress(),uncompress(),is_compress() per C 
     std::cout<<"è compressa (0): "<<MC.is_compress()<<std::endl;
     MC.compress();
@@ -47,19 +47,20 @@ int main(){
 */
 
     // call operator righe
-    
     // non const------>ok 
     Matrix<int,StorageOrdering::row> NR; //+ defaul const
     NR(0,0)=1;
     NR(0,1)=2;
     NR(1,0)=3;
     NR(1,1)=4;
-    //NR.compress();
-    //NR.printvett();
+    NR.compress();
+    NR.printvett();
+    NR(1,1)=5;
+    NR.printvett();
     
 
-/*    //call operator colonne     
-    // non const
+    //call operator colonne     
+    // non const------>ok
     Matrix<int,StorageOrdering::col> NC; //+ defaul const
     NC(0,0)=1;
     NC(0,1)=3;
@@ -69,7 +70,7 @@ int main(){
     NC.printvett();
     NC(1,1)=5;
     NC.printvett();
-*/
+
    return 0;
 } 
 
