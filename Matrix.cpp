@@ -15,7 +15,7 @@ T& Matrix<T,S>::operator() (std::size_t i,std::size_t j){
                     if(ColIndx[jj]==j)
                         return val[jj];    //ritorna ref a vettore di valori in posizione i j 
                 } 
-                // Da fare: ERRORE SE INDICI NON PRESENTI IN MATRIX   
+                // Da fare: ERRORE SE INDICI NON PRESENTI IN MATRIX.   static_assert() da provare   
         }
         if constexpr(S==StorageOrdering::col){
                 for(unsigned int jj=RowPoint[j]; jj<RowPoint[j+1]; jj++){
