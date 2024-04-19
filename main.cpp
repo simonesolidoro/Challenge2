@@ -29,7 +29,7 @@ int main(){
 */
     
 
-    // compress(),uncompress(),is_compress() per R--->ok 
+/*    // compress(),uncompress(),is_compress() per R--->ok 
     std::cout<<"è compressa (0): "<<MR.is_compress()<<std::endl;
     MR.compress();
     std::cout<<"è compressa (1): "<<MR.is_compress()<<std::endl;
@@ -46,7 +46,7 @@ int main(){
     MC.uncompress();
     std::cout<<"è compressa (0): "<<MC.is_compress()<<std::endl;
     MC.printvett();
-
+*/
 
  /*   // call operator righe
     // non const------>ok 
@@ -84,8 +84,21 @@ int main(){
     const Matrix<int,StorageOrdering::col> MC(mapC);
     std::cout<<"m(0,0)= 1:"<<MC(0,0)<<"m(10,10)=0 :"<<MC(10,10)<<std::endl;
 */
-    std::cout<<MR(1,0);
-    std::cout<<MC(1,0);
+
+    Matrix<int,StorageOrdering::row> M;
+    M(0,1)=3;
+    M(0,2)=2;
+    M(1,2)=1;
+    M(2,1)=4;
+    M(2,2)=2;
+    //M.compress();
+    std::vector<int> v={1, 2, 3};
+    std::vector<int> sol;
+    //sol=M*v;
+    sol=operator*(M,v);
+    for(auto x: sol){
+        std::cout<<"soluzione"<<x<<std::endl;
+        }
 
     
 
