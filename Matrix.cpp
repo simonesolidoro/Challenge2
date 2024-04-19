@@ -2,18 +2,6 @@
 
 using namespace algebra;
 
-/*
-//costruttore
-template <class T, StorageOrdering S>
-Matrix<T,S>::Matrix(std::map<std::array<std::size_t,2>,T> D){
-    if(S==StorageOrdering::row)
-        Dati.insert(D.begin(),D.end());
-    if(S==StorageOrdering::col)  
-        Dati.insert(D.begin(),D.end());                    
-        for(auto it=D.begin(); it!=D.end(); it++)  // alternativa
-            DatiC[{it->first}]=it->second;
-};
-*/
 //costruttore
 template <class T, StorageOrdering S>
 Matrix<T,S>::Matrix(std::map<std::array<std::size_t,2>,T,cmp<S>> D):Dati(D){}
@@ -41,7 +29,6 @@ T& Matrix<T,S>::operator() (std::size_t i,std::size_t j){
             } // DA Fare: ERRORE SE INDICI NON PRESENTI IN MATRIX     
         } 
         else{
-             std::cout<<"chiamata "<<std::endl;
             return Dati[{i,j}];}        // cosi se poszione(i,j) non presente viene aggiunta 
 
     }
@@ -49,7 +36,7 @@ T& Matrix<T,S>::operator() (std::size_t i,std::size_t j){
 
 // call operator const (leave user look for i,j in range of matrix)
 template <class T,StorageOrdering S>
-T& Matrix<T,S>::operator() (std::size_t i,std::size_t j)const{
+T Matrix<T,S>::operator() (std::size_t i,std::size_t j)const{
     if(S==StorageOrdering::row){
         if(is_compress()){
             for(unsigned int jj=RowPoint[i]; jj<RowPoint[i+1]; jj++){

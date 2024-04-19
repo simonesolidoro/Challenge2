@@ -25,12 +25,15 @@ namespace algebra{
     template <class T, StorageOrdering S>
     class Matrix {
         private:  
-            //std::map<std::array<std::size_t,2>,T,cmp<S>> Dati;  //cmp per col
+            std::map<std::array<std::size_t,2>,T,cmp<S>> Dati;  //cmp per col
             std::vector<std::size_t> ColIndx;   //RowIndx     //OSS: nomi "azzeccati" per row_order ma usati identici in col_order 
             std::vector<std::size_t> RowPoint;  //ColPoint
             std::vector<T> val;
+            unsigned int nze; // numero non zero element
+            unsigned int nr; //numero righe
+            unsigned int nc; //numero colonne 
         public:
-    std::map<std::array<std::size_t,2>,T,cmp<S>> Dati;
+    
             // costruttore 
             Matrix(std::map<std::array<std::size_t,2>,T,cmp<S>>);
 
@@ -41,7 +44,7 @@ namespace algebra{
             T& operator() (std::size_t,std::size_t);
 
             // const call operator 
-            T& operator() (std::size_t,std::size_t) const;
+            T operator() (std::size_t,std::size_t) const;
            
            // estrae riga k se presente, altrimenti ridà mappa vuota
            std::map<std::array<std::size_t,2>,T> estrai(const std::size_t );
