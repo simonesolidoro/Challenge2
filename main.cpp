@@ -4,30 +4,30 @@
 using namespace algebra;
 
 int main(){
-/*   // prova constructor
+   // prova constructor
    // per righe---------> ok (compila) 
-    std::map<std::array<std::size_t,2>,int> mapR={{{0,0},1},{{0,1},2},{{1,0},3},{{1,1},4}};
+    std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::row>> mapR={{{0,0},1},{{0,1},2},{{1,0},3},{{1,1},4}};
     Matrix<int,StorageOrdering::row> MR(mapR); 
 
    //per colonne---------> ok 
-    std::map<std::array<std::size_t,2>,int> mapC={{{0,0},1},{{0,1},3},{{1,0},2},{{1,1},4}};
+    std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::col>> mapC={{{0,0},1},{{0,1},3},{{1,0},2},{{1,1},4}};
     //std::map<std::array<std::size_t,2>,int> mapC={{{0,0},1},{{0,1},4},{{1,1},2},{{1,2},5},{{2,2},3},{{2,3},6}};
     Matrix<int,StorageOrdering::col> MC(mapC);
-*/
-/*  //estri--------->ok
+
+  //estri--------->ok
     //righe
     std::map<std::array<std::size_t,2>,int> DR(MR.estrai(1));
     for(auto it= DR.begin(); it!=DR.end();it++){
         std::cout<<it->first[0]<<" "<<it->first[1]<<" value: "<<it->second<<std::endl;
     }
     //colonne
-    std::map<std::array<std::size_t,2>,int> DC(MC.estrai(1));
+    std::map<std::array<std::size_t,2>,int> DC(MC.estrai(0));
     for(auto it= DC.begin(); it!=DC.end();it++){
         std::cout<<it->first[0]<<" "<<it->first[1]<<" value: "<<it->second<<std::endl;
     }
-*/    
+/*    
 
-/*    // compress(),uncompress(),is_compress() per R--->ok 
+    // compress(),uncompress(),is_compress() per R--->ok 
     std::cout<<"è compressa (0): "<<MR.is_compress()<<std::endl;
     MR.compress();
     std::cout<<"è compressa (1): "<<MR.is_compress()<<std::endl;
@@ -35,8 +35,8 @@ int main(){
     MR.uncompress();
     std::cout<<"è compressa (0): "<<MR.is_compress()<<std::endl;
     MR.printvett();
-*/
- /*   // compress(),uncompress(),is_compress() per C 
+
+    // compress(),uncompress(),is_compress() per C 
     std::cout<<"è compressa (0): "<<MC.is_compress()<<std::endl;
     MC.compress();
     std::cout<<"è compressa (1): "<<MC.is_compress()<<std::endl;
@@ -44,9 +44,9 @@ int main(){
     MC.uncompress();
     std::cout<<"è compressa (0): "<<MC.is_compress()<<std::endl;
     MC.printvett();
-*/
 
- /*   // call operator righe
+
+    // call operator righe
     // non const------>ok 
     Matrix<int,StorageOrdering::row> NR; //+ defaul const
     NR(0,0)=1;
@@ -58,7 +58,7 @@ int main(){
     NR(1,1)=5;
     NR.printvett();
     
-
+*/
     //call operator colonne     
     // non const------>ok
     Matrix<int,StorageOrdering::col> NC; //+ defaul const
@@ -70,22 +70,30 @@ int main(){
     NC.printvett();
     NC(1,1)=5;
     NC.printvett();
-*/
-    // call op const
-    std::map<std::array<std::size_t,2>,int> mapR={{{0,0},1},{{0,1},2},{{1,0},3},{{1,1},4}};
+
+/*    // call op const
+    std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::row>> mapR={{{0,0},1},{{0,1},2},{{1,0},3},{{1,1},4}};
     const Matrix<int,StorageOrdering::row> MR(mapR); 
 
    //per colonne---------> ok 
-    const std::map<std::array<std::size_t,2>,int> &mapC={{{0,0},1},{{0,1},3},{{1,0},2},{{1,1},4}};
+    std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::col>> mapC{{{0,0},1},{{0,1},3},{{1,0},2},{{1,1},4}};
     //std::map<std::array<std::size_t,2>,int> mapC={{{0,0},1},{{0,1},4},{{1,1},2},{{1,2},5},{{2,2},3},{{2,3},6}};
-    const Matrix<int,StorageOrdering::col> MC({{{0,0},1}});
-    std::cout<<"m(0,0)= 1:"<<MC(0,0)<<"m(10,10)=0 :"<<MC(10,10)<<std::endl;
+    Matrix<int,StorageOrdering::col> MC(mapC);
+    std::cout<<"m(0,0)= 1:"<<MC(0,1)<<"m(10,10)=0 :"<<MC(10,10)<<std::endl;
 
-    std::cout<<MC.DatiC.at({0,0})<<std::endl;
+    //std::cout<<MC.Dati.at({0,0})<<std::endl;
     //MC.compress();
     //std::cout<<"m(0,0)= 1:"<<MC(0,0)<<"m(10,10)= 0:"<<MC(10,10)<<std::endl;
-
-
+*/
+    
+        std::map<std::array<std::size_t,2>,int> DDC(MC.estrai(0));
+    for(auto it= DDC.begin(); it!=DDC.end();it++){
+        std::cout<<it->first[0]<<" "<<it->first[1]<<" value: "<<it->second<<std::endl;
+    }
+    //MC.compress();
+    MC(0,0)=122;
+   std::cout<<MC(0,0);
+   
    return 0;
 } 
 

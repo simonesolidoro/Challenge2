@@ -7,28 +7,32 @@ namespace algebra{
     enum StorageOrdering{ row,col};
     
     // nuovo comparison operator per map in StorageOrdering per colonne
+    template<StorageOrdering S>
     struct cmp{
         bool operator() (std::array<std::size_t,2> const & A, std::array<std::size_t,2> const & B)const{
-            if(A[1]<B[1])
-                return true;
-            if(A[1]==B[1] & A[0]<=B[0])
-                return true;
-            return false;
+            if(S==StorageOrdering::col){           
+                if(A[1]<B[1])
+                    return true;
+                else if(A[1]==B[1] & A[0]<B[0])
+                    return true;
+                return false;
+            }
+            else 
+                return A<B;
         }
     };
 
     template <class T, StorageOrdering S>
     class Matrix {
-        private:
-            std::map<std::array<std::size_t,2>,T> DatiR;  
-            //std::map<std::array<std::size_t,2>,T,cmp> DatiC;  //cmp per col
+        private:  
+            //std::map<std::array<std::size_t,2>,T,cmp<S>> Dati;  //cmp per col
             std::vector<std::size_t> ColIndx;   //RowIndx     //OSS: nomi "azzeccati" per row_order ma usati identici in col_order 
             std::vector<std::size_t> RowPoint;  //ColPoint
             std::vector<T> val;
         public:
-            std::map<std::array<std::size_t,2>,T,cmp> DatiC;
+    std::map<std::array<std::size_t,2>,T,cmp<S>> Dati;
             // costruttore 
-            Matrix(std::map<std::array<std::size_t,2>,T>);
+            Matrix(std::map<std::array<std::size_t,2>,T,cmp<S>>);
 
             //Default costruttore
             Matrix()=default;
@@ -37,7 +41,7 @@ namespace algebra{
             T& operator() (std::size_t,std::size_t);
 
             // const call operator 
-            T operator() (std::size_t,std::size_t) const;
+            T& operator() (std::size_t,std::size_t) const;
            
            // estrae riga k se presente, altrimenti ridà mappa vuota
            std::map<std::array<std::size_t,2>,T> estrai(const std::size_t );
