@@ -76,10 +76,12 @@ int main(){
     const Matrix<int,StorageOrdering::row> MR(mapR); 
 
    //per colonne---------> ok 
-    std::map<std::array<std::size_t,2>,int> mapC={{{0,0},1},{{0,1},3},{{1,0},2},{{1,1},4}};
+    const std::map<std::array<std::size_t,2>,int> &mapC={{{0,0},1},{{0,1},3},{{1,0},2},{{1,1},4}};
     //std::map<std::array<std::size_t,2>,int> mapC={{{0,0},1},{{0,1},4},{{1,1},2},{{1,2},5},{{2,2},3},{{2,3},6}};
-    const Matrix<int,StorageOrdering::col> MC(mapC);
+    const Matrix<int,StorageOrdering::col> MC({{{0,0},1}});
     std::cout<<"m(0,0)= 1:"<<MC(0,0)<<"m(10,10)=0 :"<<MC(10,10)<<std::endl;
+
+    std::cout<<MC.DatiC.at({0,0})<<std::endl;
     //MC.compress();
     //std::cout<<"m(0,0)= 1:"<<MC(0,0)<<"m(10,10)= 0:"<<MC(10,10)<<std::endl;
 
