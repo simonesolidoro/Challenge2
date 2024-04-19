@@ -101,41 +101,27 @@ void Matrix<T,S>::compress(){
 
 template <class T,StorageOrdering S>
 void Matrix<T,S>::uncompress(){
-    if(S==StorageOrdering::row){
         for(unsigned int i=0; i<RowPoint.size()-1; i++){
             for(unsigned int j=RowPoint[i]; j<RowPoint[i+1]; j++){
-                Dati[{i,ColIndx[j]}]=val[j];
+                if constexpr(S==StorageOrdering::row)
+                    Dati[{i,ColIndx[j]}]=val[j];
+                if constexpr(S==StorageOrdering::col)
+                    Dati[{ColIndx[j],i}]=val[j];
             
             }
         }
-    }
-    if(S==StorageOrdering::col){
-        for(unsigned int i=0; i<RowPoint.size()-1; i++){
-            for(unsigned int j=RowPoint[i]; j<RowPoint[i+1]; j++){
-                Dati[{ColIndx[j],i}]=val[j];
-            
-            }
-        }
-    }
     ColIndx.clear();
     val.clear();
     RowPoint.clear();
 }
 
-template <class T, StorageOrdering S>  // da migliorare basta val non vuoto per false in row e col...
+template <class T, StorageOrdering S>  // 
 bool Matrix<T,S>::is_compress()const{
-    if(S==StorageOrdering::row){
-        if(Dati.empty() & !val.empty())
-            return true;
-        else 
-            return false;
-    }
-    if(S==StorageOrdering::col){
-        if(Dati.empty() & !val.empty())
-            return true;
-        else 
-            return false;
-    }
+    if(Dati.empty() & !val.empty())
+        return true;
+    else 
+        return false;
+   
 }
 
 
