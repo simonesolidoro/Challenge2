@@ -84,8 +84,10 @@ int main(){
     const Matrix<int,StorageOrdering::col> MC(mapC);
     std::cout<<"m(0,0)= 1:"<<MC(0,0)<<"m(10,10)=0 :"<<MC(10,10)<<std::endl;
 */
-
-    Matrix<int,StorageOrdering::row> M;
+    std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::col>> mapp={{{0,0},1},{{1,1},2}};
+    Matrix<int,StorageOrdering::col> N(mapp);
+    std::cout<<N<<std::endl;
+    Matrix<int,StorageOrdering::col> M;
     M(0,1)=3;
     M(0,2)=2;
     M(1,2)=1;
@@ -100,7 +102,7 @@ int main(){
         std::cout<<"soluzione"<<x<<std::endl;
         }
 
-    
+    std::cout<<M;
 
    
    return 0;
