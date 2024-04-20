@@ -24,7 +24,7 @@ T& Matrix<T,S>::operator() (std::size_t i,std::size_t j){
                 } 
                 // Da fare: ERRORE SE INDICI NON PRESENTI IN MATRIX.   
                 std::cout<<"elemento ("<<i<<", "<<j<<") non presente in compressed matrix"<<std::endl;
-                std::exit(0);  
+                std::exit(1);  
         }
         if constexpr(S==StorageOrdering::col){
                 for(unsigned int jj=RowPoint[j]; jj<RowPoint[j+1]; jj++){
@@ -33,7 +33,7 @@ T& Matrix<T,S>::operator() (std::size_t i,std::size_t j){
                 }
                 // DA Fare: ERRORE SE INDICI NON PRESENTI IN MATRIX 
                 std::cout<<"elemento ("<<i<<", "<<j<<") non presente in compressed matrix"<<std::endl;
-                std::exit(0);  
+                std::exit(1);  
         }
     }
     if(Dati.find({i,j})==Dati.end()) // se elemento non presente aggiorna ncol nrow
@@ -159,6 +159,31 @@ bool Matrix<T,S>::is_compress()const{
         return false;
    
 }
+
+template<class T, StorageOrdering S>
+void Matrix<T,S>::read(const std::string& filename){
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Error opening file" << std::endl;
+        return;
+    }
+    unsigned int i;
+    unsigned int j;
+    T val;
+    while(file >> i>> j>> val){
+        this->operator()(i,j)=val;
+    }
+}
+
+    // getter
+    template<class T,StorageOrdering S>
+    unsigned int Matrix<T,S>::getNrow(){ return nrow;}
+
+    template<class T,StorageOrdering S>
+    unsigned int Matrix<T,S>::getNcol(){ return ncol;}
+
+    template<class T,StorageOrdering S>
+    unsigned int Matrix<T,S>::getNze(){ return nze;}
 
 
 

@@ -5,7 +5,7 @@ using namespace algebra;
 
 int main(){
   // prova constructor
-   // per righe---------> ok (compila) 
+/*   // per righe---------> ok (compila) 
     std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::row>> mapR={{{0,0},1},{{0,1},2},{{1,0},3},{{1,1},4}};
     Matrix<int,StorageOrdering::row> MR(mapR); 
 
@@ -13,7 +13,7 @@ int main(){
     std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::col>> mapC={{{0,0},1},{{0,1},3},{{1,0},2},{{1,1},4}};
     //std::map<std::array<std::size_t,2>,int> mapC={{{0,0},1},{{0,1},4},{{1,1},2},{{1,2},5},{{2,2},3},{{2,3},6}};
     Matrix<int,StorageOrdering::col> MC(mapC);
-
+*/
 
  /* //estri--------->ok
     //righe
@@ -84,11 +84,12 @@ int main(){
     const Matrix<int,StorageOrdering::col> MC(mapC);
     std::cout<<"m(0,0)= 1:"<<MC(0,0)<<"m(10,10)=0 :"<<MC(10,10)<<std::endl;
 */
-  //prova *
+  //prova 
    /*  std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::col>> mapp={{{0,0},1},{{1,1},2}};
     Matrix<int,StorageOrdering::col> N(mapp);
-    std::cout<<N<<std::endl; */
-    Matrix<int,StorageOrdering::col> M;
+    std::cout<<N<<std::endl;
+     
+   Matrix<int,StorageOrdering::col> M;
     M(0,1)=3;
     M(0,2)=2;
     M(1,2)=1;
@@ -104,7 +105,7 @@ int main(){
         }
 
     std::cout<<M;
-
+*/
 
 /*// capire se M(i,j) chiamata elemento non presente ridà 0(quindi chiama const ()) o chiama non const () e quindi aggiunto elemento
 Matrix<int,StorageOrdering::row> M;
@@ -119,7 +120,7 @@ MM(3,3);
 std::cout<<MM<<std::endl<<NN;
 */
 
-/* prova errori se indici non presenti in compress matrix in non const call op
+/* //prova errori se indici non presenti in compress matrix in non const call op
 
   Matrix<int,StorageOrdering::row> MM({{{0,1},1}});
   MM.compress();
@@ -127,7 +128,32 @@ std::cout<<MM<<std::endl<<NN;
   MM.uncompress();
   std::cout<<MM;
 */
+/*
+//prova complex std::complex<T>
+    Matrix<std::complex<int>, StorageOrdering::row> M({{{0,0},1},{{1,1},{4,2}}}); //{{{0,0},1},{{1,1},4}}
+    M(0,0)={10,34};
+    std::cout<<M;
+    M.compress();
+    M.printvett();
+    M.uncompress();
+     std::cout<<M;
+     M.printvett();
+     std::vector<std::complex<int>> v={{1,1},{2,2}};
+     std::cout<<std::is_same_v(decltype(M*v),std::complex<int>);
+*/
 
-   return 0;
+// prova read from file 
+    Matrix<double,StorageOrdering::row> M;
+    M.read("matriceprova.mtx"); 
+    std::cout<<M;                                           //("data.txt");
+    std::cout<< M(122,90);
+
+    std::vector<double> v(M.getNrow(),2);
+    std::vector<double> sol(M.getNrow());
+    sol=M*v;
+    for (auto x: sol ){
+        std::cout<<x<<std::endl;
+    }
+    return 0;
 } 
 

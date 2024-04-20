@@ -2,6 +2,9 @@
 #include<array>
 #include<map>
 #include<vector>
+#include <complex>
+#include <fstream>
+#include <iomanip>
 
 namespace algebra{
     enum StorageOrdering{ row,col};
@@ -78,13 +81,20 @@ namespace algebra{
             template <class U, StorageOrdering Z>
             friend std::ostream & operator<<(std::ostream &stream, Matrix<U,Z> &M);
 
-            /// Stream operator. utile per debug
+            /// Stream operator per const matrix. utile per debug
             template <class U, StorageOrdering Z>
             friend std::ostream & operator<<(std::ostream &stream,const Matrix<U,Z> &M);
 
+            /// read metod
+            void read(const std::string& filename);
+
             //print vettori CSR utile per debug
             void printvett();
-       
+
+            //getter
+            unsigned int getNrow();
+            unsigned int getNcol();
+            unsigned int getNze();
 
     };
 
@@ -143,6 +153,8 @@ std::vector<T> operator * (Matrix<T,S> M, std::vector<T> v){
 template <class T, StorageOrdering S>
 std::ostream & operator<<(std::ostream &stream, Matrix<T,S> &M){
     // per uncompress form sia row sia col
+    stream << std::setprecision(std::numeric_limits<T>::digits10 + 1);
+    stream.setf(std::ios_base::scientific, std::ios_base::floatfield);
     for (auto j = M.Dati.begin(); j != M.Dati.end(); ++j)
         {
         stream << j->first[0]<< ", "<< j->first[1] << ", "<< j->second<< "\n";
@@ -156,6 +168,8 @@ std::ostream & operator<<(std::ostream &stream, Matrix<T,S> &M){
 template <class T, StorageOrdering S>
 std::ostream & operator<<(std::ostream &stream, const Matrix<T,S> &M){
     // per uncompress form sia row sia col
+    stream << std::setprecision(std::numeric_limits<T>::digits10 + 1);
+    stream.setf(std::ios_base::scientific);
     for (auto j = M.Dati.begin(); j != M.Dati.end(); ++j)
         {
         stream << j->first[0]<< ", "<< j->first[1] << ", "<< j->second<< "\n";
