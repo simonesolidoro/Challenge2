@@ -78,6 +78,7 @@ namespace algebra{
 
 template <class T, StorageOrdering S>
 std::vector<T> operator * (Matrix<T,S> M, std::vector<T> v){
+    if (S== StorageOrdering::row){
     std::vector<T> prod; //size=numero righe di matrix, poi devi riservare spazio fin da subito
     T sum=0;
     if(M.is_compress()){
@@ -100,8 +101,32 @@ std::vector<T> operator * (Matrix<T,S> M, std::vector<T> v){
         sum=0;
         }
     return prod;
+    }
+    if (S==StorageOrdering::col){
+        if(M.is_compress()){
+            std::vector<T> prod(5);// messo 5 nrow finche non imolemento nrow e ncol in privat member
+            for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
+                for(unsigned int j=M.RowPoint[i]; j<M.RowPoint[i+1]; j++)
+                    prod[j]+=M.val[j] *v[i];
+            }
+            return prod;
+        }
+      //uncompress()
+      unsigned int ncol= (M.Dati.rbegin())->first[1]; //num col in matrice
+      // !!!!!  SERVE NROW
+      std::vector<T> prod(5); // gia size=nrow perche poi elementi aggiunti con []= e non pushback        
+      for (unsigned int t=0; t<=ncol; t++){
+        auto C=M.estrai(t);
+        for (auto it=C.begin(); it!=C.end();it++){
+            prod[it->first[0]]+=it->second*v[t];
+        }
+      }
+      return prod;
+    }
     // manca per col sia compree sia uncompress
 }
+
+
 
 template <class T, StorageOrdering S>
 std::ostream & operator<<(std::ostream &stream, Matrix<T,S> &M){
