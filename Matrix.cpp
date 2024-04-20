@@ -1,12 +1,19 @@
 #include"Matrix.hpp"
 
+
 using namespace algebra;
 
 //costruttore
 template <class T, StorageOrdering S>
-Matrix<T,S>::Matrix(std::map<std::array<std::size_t,2>,T,cmp<S>> D):Dati(D){}
+Matrix<T,S>::Matrix(std::map<std::array<std::size_t,2>,T,cmp<S>> D):Dati(D),nze(D.size()){
+    resizeGen();
+}
 
-//call operator non const(return reference per poter modificare)
+//costruttore sz matrix
+template<class T, StorageOrdering S>
+Matrix<T,S>::Matrix(unsigned int sz):nze(sz){}
+
+//call operator non cons. exit() termina porprio programma, cerca modo per uscire solo da funzione  
 template <class T, StorageOrdering S>
 T& Matrix<T,S>::operator() (std::size_t i,std::size_t j){
     if (is_compress()){
@@ -15,7 +22,9 @@ T& Matrix<T,S>::operator() (std::size_t i,std::size_t j){
                     if(ColIndx[jj]==j)
                         return val[jj];    //ritorna ref a vettore di valori in posizione i j 
                 } 
-                // Da fare: ERRORE SE INDICI NON PRESENTI IN MATRIX.   static_assert() da provare   
+                // Da fare: ERRORE SE INDICI NON PRESENTI IN MATRIX.   
+                std::cout<<"elemento ("<<i<<", "<<j<<") non presente in compressed matrix"<<std::endl;
+                std::exit(0);  
         }
         if constexpr(S==StorageOrdering::col){
                 for(unsigned int jj=RowPoint[j]; jj<RowPoint[j+1]; jj++){
@@ -23,15 +32,20 @@ T& Matrix<T,S>::operator() (std::size_t i,std::size_t j){
                         return val[jj];    //ritorna ref a vettore di valori in posizione i j 
                 }
                 // DA Fare: ERRORE SE INDICI NON PRESENTI IN MATRIX 
+                std::cout<<"elemento ("<<i<<", "<<j<<") non presente in compressed matrix"<<std::endl;
+                std::exit(0);  
         }
     }
+    if(Dati.find({i,j})==Dati.end()) // se elemento non presente aggiorna ncol nrow
+        resizeNewEl(i,j);
+        nze++;
+        
     return Dati[{i,j}];        // cosi se poszione(i,j) non presente viene aggiunta
 } 
 
-// call operator const (leave user look for i,j in range of matrix)
+// call operator const (lasciato ad utente non richiedere indici fuori da matrice )
 template <class T,StorageOrdering S>
 T Matrix<T,S>::operator() (std::size_t i,std::size_t j)const{
-    
     if(is_compress()){
         if constexpr(S==StorageOrdering::row){
             for(unsigned int jj=RowPoint[i]; jj<RowPoint[i+1]; jj++){
@@ -56,7 +70,7 @@ T Matrix<T,S>::operator() (std::size_t i,std::size_t j)const{
 
 // metodo che estrae riga k
 template <class T,StorageOrdering S>
-std::map<std::array<std::size_t,2>,T> Matrix<T,S>::estrai(const std::size_t k){
+std::map<std::array<std::size_t,2>,T> Matrix<T,S>::estrai(const std::size_t k) const{
     std::map<std::array<std::size_t,2>,T> riga; //map contenente riga K/o colonna
     if constexpr(S==StorageOrdering::row){
         for (auto it=Dati.lower_bound({k,0}); it!=Dati.lower_bound({k+1,0}); it++){
@@ -69,6 +83,28 @@ std::map<std::array<std::size_t,2>,T> Matrix<T,S>::estrai(const std::size_t k){
         }
         return riga;}
 
+}
+
+// resize generale
+template<class T, StorageOrdering S>
+void Matrix<T,S>::resizeGen(){
+    nze=Dati.size();
+    for (auto it=Dati.begin(); it!= Dati.end(); it++){
+        if (it->first[0]>=nrow)
+            nrow=(it->first[0])+1; //+1 perche elemnti di matrice partono da 0, nrow e ncol invce sono numero esatto di colonne e righe 
+        if(it->first[1]>=ncol)
+            ncol=(it->first[1])+1;
+    }   
+}
+
+
+// resize per aggiunta nuovo elemento
+template<class T, StorageOrdering S>
+void Matrix<T,S>::resizeNewEl(std::size_t i, std::size_t j){
+    if(i>=nrow)
+        nrow=i+1;
+    if(j>=ncol)
+        ncol=j+1;
 }
 
 // comprime dati-->vectors

@@ -29,25 +29,34 @@ namespace algebra{
             std::vector<std::size_t> ColIndx;   //RowIndx     //OSS: nomi "azzeccati" per row_order ma usati identici in col_order 
             std::vector<std::size_t> RowPoint;  //ColPoint
             std::vector<T> val;
-            unsigned int nze; // numero non zero element
-            unsigned int nr; //numero righe
-            unsigned int nc; //numero colonne 
+            unsigned int nze=0; // numero non zero element
+            unsigned int nrow=0; //numero righe
+            unsigned int ncol=0; //numero colonne 
         public:
     
             // costruttore 
             Matrix(std::map<std::array<std::size_t,2>,T,cmp<S>>);
 
+            // costruttore con size matrix(nze)
+            Matrix(unsigned int);
+
             //Default costruttore
             Matrix()=default;
 
             // non const call operator che aggiune elemento se non presente o modifica se presente
-            T& operator() (std::size_t,std::size_t);
+            T& operator() (std::size_t ,std::size_t );
 
             // const call operator 
-            T operator() (std::size_t,std::size_t) const;
+            T operator() (std::size_t ,std::size_t ) const;
            
             // estrae riga k se presente, altrimenti ridà mappa vuota
-            std::map<std::array<std::size_t,2>,T> estrai(const std::size_t );
+            std::map<std::array<std::size_t,2>,T> estrai(const std::size_t ) const;
+
+            // resize generale 
+            void resizeGen();
+
+            // metodo che aggiorna sz nrow ncol per inserimento nuovo elemento ({i,j}, val)
+            void resizeNewEl(std::size_t, std::size_t);
 
             // compress metod popola vettori per rappresentazione CSR
             void compress();
@@ -69,6 +78,10 @@ namespace algebra{
             template <class U, StorageOrdering Z>
             friend std::ostream & operator<<(std::ostream &stream, Matrix<U,Z> &M);
 
+            /// Stream operator. utile per debug
+            template <class U, StorageOrdering Z>
+            friend std::ostream & operator<<(std::ostream &stream,const Matrix<U,Z> &M);
+
             //print vettori CSR utile per debug
             void printvett();
        
@@ -76,12 +89,12 @@ namespace algebra{
     };
 
 
-template <class T, StorageOrdering S>
+template <class T, StorageOrdering S> // DA OTTIMIZZARE col e row 
 std::vector<T> operator * (Matrix<T,S> M, std::vector<T> v){
     if (S== StorageOrdering::row){
     std::vector<T> prod; //size=numero righe di matrix, poi devi riservare spazio fin da subito
     T sum=0;
-    if(M.is_compress()){
+    if(M.is_compress()){ // da ottimizzare, variabile sum superflua credo possibile prod.push_back() e poi prod[]=+..
         for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
             for(unsigned int j=M.RowPoint[i]; j<M.RowPoint[i+1]; j++){
                 sum+=v[M.ColIndx[j]]*M.val[j];
@@ -104,17 +117,16 @@ std::vector<T> operator * (Matrix<T,S> M, std::vector<T> v){
     }
     if (S==StorageOrdering::col){
         if(M.is_compress()){
-            std::vector<T> prod(5);// messo 5 nrow finche non imolemento nrow e ncol in privat member
+            std::vector<T> prod(M.nrow);// messo 5 nrow finche non imolemento nrow e ncol in privat member
             for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
                 for(unsigned int j=M.RowPoint[i]; j<M.RowPoint[i+1]; j++)
-                    prod[j]+=M.val[j] *v[i];
+                    prod[M.ColIndx[j]]+=M.val[j] *v[i]; // i indice colonna, Colindx[j]= riga, j scorre ColIndex e quindi val
             }
             return prod;
         }
       //uncompress()
       unsigned int ncol= (M.Dati.rbegin())->first[1]; //num col in matrice
-      // !!!!!  SERVE NROW
-      std::vector<T> prod(5); // gia size=nrow perche poi elementi aggiunti con []= e non pushback        
+      std::vector<T> prod(M.nrow); // gia size=nrow perche poi elementi aggiunti con []= e non pushback        
       for (unsigned int t=0; t<=ncol; t++){
         auto C=M.estrai(t);
         for (auto it=C.begin(); it!=C.end();it++){
@@ -135,6 +147,20 @@ std::ostream & operator<<(std::ostream &stream, Matrix<T,S> &M){
         {
         stream << j->first[0]<< ", "<< j->first[1] << ", "<< j->second<< "\n";
         }
+    stream<< "nze: "<<M.nze<<" , "<< "nrow: "<<M.nrow<<" , "<<"ncol: "<<M.ncol<<"\n ";
+    return stream;
+
+    // manca compress per row e col
+}
+
+template <class T, StorageOrdering S>
+std::ostream & operator<<(std::ostream &stream, const Matrix<T,S> &M){
+    // per uncompress form sia row sia col
+    for (auto j = M.Dati.begin(); j != M.Dati.end(); ++j)
+        {
+        stream << j->first[0]<< ", "<< j->first[1] << ", "<< j->second<< "\n";
+        }
+    stream<< "nze: "<<M.nze<<" , "<< "nrow: "<<M.nrow<<" , "<<"ncol: "<<M.ncol<<"\n ";
     return stream;
 
     // manca compress per row e col

@@ -84,16 +84,17 @@ int main(){
     const Matrix<int,StorageOrdering::col> MC(mapC);
     std::cout<<"m(0,0)= 1:"<<MC(0,0)<<"m(10,10)=0 :"<<MC(10,10)<<std::endl;
 */
-    std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::col>> mapp={{{0,0},1},{{1,1},2}};
+  //prova *
+   /*  std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::col>> mapp={{{0,0},1},{{1,1},2}};
     Matrix<int,StorageOrdering::col> N(mapp);
-    std::cout<<N<<std::endl;
+    std::cout<<N<<std::endl; */
     Matrix<int,StorageOrdering::col> M;
     M(0,1)=3;
     M(0,2)=2;
     M(1,2)=1;
     M(2,1)=4;
     M(2,2)=2;
-    //M.compress();
+    M.compress();
     std::vector<int> v={1, 2, 3};
     std::vector<int> sol;
     //sol=M*v;
@@ -104,7 +105,29 @@ int main(){
 
     std::cout<<M;
 
-   
+
+/*// capire se M(i,j) chiamata elemento non presente ridà 0(quindi chiama const ()) o chiama non const () e quindi aggiunto elemento
+Matrix<int,StorageOrdering::row> M;
+M(1,1);
+std::cout<<M;
+*/
+/*// prova costruttori: const matrix con passaggio Dati--->ok
+//                                 "             sz ---> ok
+const Matrix<int,StorageOrdering::row> MM({{{0,1},1}});
+const Matrix<int,StorageOrdering::row> NN(3);
+MM(3,3);
+std::cout<<MM<<std::endl<<NN;
+*/
+
+/* prova errori se indici non presenti in compress matrix in non const call op
+
+  Matrix<int,StorageOrdering::row> MM({{{0,1},1}});
+  MM.compress();
+  std::cout<<MM(0,0)<<std::endl;
+  MM.uncompress();
+  std::cout<<MM;
+*/
+
    return 0;
 } 
 
