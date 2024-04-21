@@ -1,6 +1,7 @@
 #include<iostream>
 #include"Matrix.cpp"
 #include<iterator>
+#include "chrono.hpp" //g++ -I. -I/mnt/c/Users/Cosimo\ Solidoro/Desktop/PACS/Esempi/pacs-examples/Examples/src/Utilities main.cpp -o main
 using namespace algebra;
 
 int main(){
@@ -142,18 +143,58 @@ std::cout<<MM<<std::endl<<NN;
      std::cout<<std::is_same_v(decltype(M*v),std::complex<int>);
 */
 
-// prova read from file 
+
+    
+
+    //prova tempo
     Matrix<double,StorageOrdering::row> M;
     M.read("matriceprova.mtx"); 
-    std::cout<<M;                                           //("data.txt");
-    std::cout<< M(122,90);
+    Matrix<double,StorageOrdering::col> N;
+    N.read("matriceprova.mtx"); 
 
-    std::vector<double> v(M.getNrow(),2);
-    std::vector<double> sol(M.getNrow());
-    sol=M*v;
-    for (auto x: sol ){
-        std::cout<<x<<std::endl;
-    }
+    std::vector<double> v(M.getNrow(),2); 
+
+    std::vector<double> solr(M.getNrow());
+    std::vector<double> solrc(M.getNrow());
+    std::vector<double> solc(N.getNrow());
+    std::vector<double> solcc(N.getNrow());
+    
+    Timings::Chrono tempoRU;
+    Timings::Chrono tempoRC;
+    Timings::Chrono tempoCU;
+    Timings::Chrono tempoCC;
+
+    tempoRU.start();
+    solr=M*v;
+    tempoRU.stop();
+
+    M.compress();
+    tempoRC.start();
+    solrc=M*v;
+    tempoRC.stop();
+
+    tempoCU.start();
+    solc=N*v;
+    tempoCU.stop();
+
+    N.compress();
+    tempoCC.start();
+    solcc=N*v;
+    tempoCC.stop();
+
+    std::cout<< "R uncompress: "<<tempoRU<<std::endl;
+    std::cout<< "R compress: "<<tempoRC<<std::endl;
+    std::cout<< "C uncompress: "<<tempoCU<<std::endl;
+    std::cout<< "C compress: "<<tempoCC<<std::endl;
+    // risultati confermano compress piu veloce sia in row sia in col(numeri risultati cambiano ad ogni run ma ordien di grandezza simile)
+    //R uncompress: Elapsed Time= 1.116400e+03 microsec
+
+    //R compress: Elapsed Time= 3.910000e+01 microsec
+
+    //C uncompress: Elapsed Time= 8.788000e+02 microsec
+
+    //C compress: Elapsed Time= 1.930000e+01 microsec
+
     return 0;
 } 
 
