@@ -1,33 +1,206 @@
 #include"Matrix.hpp"
 
+
 using namespace algebra;
 
 //costruttore
 template <class T, StorageOrdering S>
-Matrix<T,S>::Matrix(std::map<std::array<std::size_t,2>,T> D){
-    Dati.insert(D.begin(),D.end());
-};
+Matrix<T,S>::Matrix(std::map<std::array<std::size_t,2>,T,cmp<S>> D):Dati(D),nze(D.size()){
+    resizeGen();
+}
 
-//call operator non const(return reference per poter modificare)
+//costruttore sz matrix
+template<class T, StorageOrdering S>
+Matrix<T,S>::Matrix(unsigned int sz):nze(sz){}
+
+//call operator non cons. exit() termina porprio programma, cerca modo per uscire solo da funzione  
 template <class T, StorageOrdering S>
 T& Matrix<T,S>::operator() (std::size_t i,std::size_t j){
-    return Dati[{i,j}];         // cosi se poszione(i,j) non presente viene aggiunta
-    //return Dati.at({i,j});    // se posizione non presente-> out_of_range, non aggiunge 
-};
+    if (is_compress()){
+        if constexpr(S==StorageOrdering::row){
+                for(unsigned int jj=RowPoint[i]; jj<RowPoint[i+1]; jj++){
+                    if(ColIndx[jj]==j)
+                        return val[jj];    //ritorna ref a vettore di valori in posizione i j 
+                } 
+                // Da fare: ERRORE SE INDICI NON PRESENTI IN MATRIX.   
+                std::cout<<"elemento ("<<i<<", "<<j<<") non presente in compressed matrix"<<std::endl;
+                std::exit(1);  
+        }
+        if constexpr(S==StorageOrdering::col){
+                for(unsigned int jj=RowPoint[j]; jj<RowPoint[j+1]; jj++){
+                    if(ColIndx[jj]==i)
+                        return val[jj];    //ritorna ref a vettore di valori in posizione i j 
+                }
+                // DA Fare: ERRORE SE INDICI NON PRESENTI IN MATRIX 
+                std::cout<<"elemento ("<<i<<", "<<j<<") non presente in compressed matrix"<<std::endl;
+                std::exit(1);  
+        }
+    }
+    if(Dati.find({i,j})==Dati.end()) // se elemento non presente aggiorna ncol nrow
+        resizeNewEl(i,j);
+        nze++;
+        
+    return Dati[{i,j}];        // cosi se poszione(i,j) non presente viene aggiunta
+} 
 
-
-
+// call operator const (lasciato ad utente non richiedere indici fuori da matrice )
 template <class T,StorageOrdering S>
-std::map<std::array<std::size_t,2>,T> Matrix<T,S>::estrai(const std::size_t k){
+T Matrix<T,S>::operator() (std::size_t i,std::size_t j)const{
+    if(is_compress()){
+        if constexpr(S==StorageOrdering::row){
+            for(unsigned int jj=RowPoint[i]; jj<RowPoint[i+1]; jj++){
+                if(ColIndx[jj]==j)
+                    return val[jj];     
+            }
+            return 0;
+        }
+        if constexpr(S==StorageOrdering::col){
+            for(unsigned int jj=RowPoint[j]; jj<RowPoint[j+1]; jj++){
+                if(ColIndx[jj]==i)
+                    return val[jj];     
+            }
+           return 0;
+        }
+    }
+    if(Dati.find({i,j}) != Dati.end())
+        return Dati.at({i,j});
+    else
+        return 0;
+}
 
-    
-        std::array<std::size_t,2> indici={k};    // {k,0}
-        std::array<std::size_t,2> ind_due={k+1}; // {k+1,0} in modo che ciclo for termini appena finiti elementi con key {k,*}
-        std::map<std::array<std::size_t,2>,T> riga; //map contenente riga K
-        for (auto it=Dati.lower_bound(indici); it!=Dati.lower_bound(ind_due); it++){
+// metodo che estrae riga k
+template <class T,StorageOrdering S>
+std::map<std::array<std::size_t,2>,T> Matrix<T,S>::estrai(const std::size_t k) const{
+    std::map<std::array<std::size_t,2>,T> riga; //map contenente riga K/o colonna
+    if constexpr(S==StorageOrdering::row){
+        for (auto it=Dati.lower_bound({k,0}); it!=Dati.lower_bound({k+1,0}); it++){
             riga[it->first]=it->second;
         }
-        return riga; 
+        return riga;}
+    if constexpr(S==StorageOrdering::col){  
+        for (auto it=Dati.lower_bound({0,k}); it!=Dati.lower_bound({0,k+1}); it++){
+            riga[it->first]=it->second;
+        }
+        return riga;}
+
+}
+
+// resize generale
+template<class T, StorageOrdering S>
+void Matrix<T,S>::resizeGen(){
+    nze=Dati.size();
+    for (auto it=Dati.begin(); it!= Dati.end(); it++){
+        if (it->first[0]>=nrow)
+            nrow=(it->first[0])+1; //+1 perche elemnti di matrice partono da 0, nrow e ncol invce sono numero esatto di colonne e righe 
+        if(it->first[1]>=ncol)
+            ncol=(it->first[1])+1;
+    }   
+}
+
+
+// resize per aggiunta nuovo elemento
+template<class T, StorageOrdering S>
+void Matrix<T,S>::resizeNewEl(std::size_t i, std::size_t j){
+    if(i>=nrow)
+        nrow=i+1;
+    if(j>=ncol)
+        ncol=j+1;
+}
+
+// comprime dati-->vectors
+template <class T,StorageOrdering S>
+void Matrix<T,S>::compress(){
+    int a;
+    int b;
+    if constexpr(S==StorageOrdering::row){
+        a=1;
+        b=0;
+    }
+    if constexpr(S==StorageOrdering::col){
+        a=0;
+        b=0;
+    }
+        unsigned int n = (Dati.rbegin())->first[b];//numero righe o colonne
+        unsigned int point = 0; //per inserire posizione di primo elemento non vuoto in riga 
+        RowPoint.push_back(point); //primo elemento sempre 0;
+        for (unsigned int i=0; i<=n; i++){   // <= perchè in Dati.first indice riga/colonna è gia indice che parte da 0
+            auto R=estrai(i);
+            for (auto it=R.begin(); it!=R.end(); it++){
+                val.push_back(it->second);
+                ColIndx.push_back(it->first[a]);
+                point++;
+                }
+            RowPoint.push_back(point);
+        }
+        Dati.clear();//svuotata map di dati una volta passati da dinamic a CSR
+}
+
+template <class T,StorageOrdering S>
+void Matrix<T,S>::uncompress(){
+        for(unsigned int i=0; i<RowPoint.size()-1; i++){
+            for(unsigned int j=RowPoint[i]; j<RowPoint[i+1]; j++){
+                if constexpr(S==StorageOrdering::row)
+                    Dati[{i,ColIndx[j]}]=val[j];
+                if constexpr(S==StorageOrdering::col)
+                    Dati[{ColIndx[j],i}]=val[j];
+            
+            }
+        }
+    ColIndx.clear();
+    val.clear();
+    RowPoint.clear();
+}
+
+template <class T, StorageOrdering S>  // 
+bool Matrix<T,S>::is_compress()const{
+    if(Dati.empty() & !val.empty())
+        return true;
+    else 
+        return false;
+   
+}
+
+template<class T, StorageOrdering S>
+void Matrix<T,S>::read(const std::string& filename){
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Error opening file" << std::endl;
+        return;
+    }
+    unsigned int i;
+    unsigned int j;
+    T val;
+    while(file >> i>> j>> val){
+        this->operator()(i,j)=val;
+    }
+}
+
+    // getter
+    template<class T,StorageOrdering S>
+    unsigned int Matrix<T,S>::getNrow(){ return nrow;}
+
+    template<class T,StorageOrdering S>
+    unsigned int Matrix<T,S>::getNcol(){ return ncol;}
+
+    template<class T,StorageOrdering S>
+    unsigned int Matrix<T,S>::getNze(){ return nze;}
+
+
+
+template <class T, StorageOrdering S>
+void Matrix<T,S>::printvett(){
+    std::cout<<"colindx: ";
+    for (unsigned int x: ColIndx)
+        std::cout<<x<<" ";
+    std::cout<<std::endl;
+    std::cout<<"val: ";
+     for (T x: val)
+        std::cout<<x<<" ";
+    std::cout<<std::endl;
+    std::cout<<"Roepoint: ";
+     for (unsigned int x: RowPoint)
+        std::cout<<x<<" ";
+    std::cout<<std::endl;
 }
 
 
