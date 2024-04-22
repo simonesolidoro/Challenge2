@@ -101,31 +101,32 @@ namespace algebra{
 
 template <class T, StorageOrdering S> // DA OTTIMIZZARE col e row 
 std::vector<T> operator * (Matrix<T,S> M, std::vector<T> v){
-    if (S== StorageOrdering::row){
-    std::vector<T> prod; //size=numero righe di matrix, poi devi riservare spazio fin da subito
-    T sum=0;
-    if(M.is_compress()){ // da ottimizzare, variabile sum superflua credo possibile prod.push_back() e poi prod[]=+..
-        for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
-            for(unsigned int j=M.RowPoint[i]; j<M.RowPoint[i+1]; j++){
-                sum+=v[M.ColIndx[j]]*M.val[j];
+    if constexpr(S== StorageOrdering::row){
+        std::vector<T> prod; //size=numero righe di matrix, poi devi riservare spazio fin da subito
+        prod.reserve(M.nrow); 
+        T sum=0;
+        if(M.is_compress()){ // da ottimizzare, variabile sum superflua credo possibile prod.push_back() e poi prod[]=+..
+            for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
+                for(unsigned int j=M.RowPoint[i]; j<M.RowPoint[i+1]; j++){
+                    sum+=v[M.ColIndx[j]]*M.val[j];
+                }
+                prod.push_back(sum);
+                sum=0;
+            }
+            return prod;
+        }
+        unsigned int nrow = (M.Dati.rbegin())->first[0];
+        for (unsigned int i=0; i<=nrow; i++){   
+            auto R=M.estrai(i);
+            for(auto & x: R){
+                sum+=x.second*v[x.first[1]];
             }
             prod.push_back(sum);
             sum=0;
-        }
+            }
         return prod;
-        }
-    unsigned int nrow = (M.Dati.rbegin())->first[0];
-    for (unsigned int i=0; i<=nrow; i++){   
-        auto R=M.estrai(i);
-        for(auto & x: R){
-            sum+=x.second*v[x.first[1]];
-        }
-        prod.push_back(sum);
-        sum=0;
-        }
-    return prod;
     }
-    if (S==StorageOrdering::col){
+    if constexpr (S==StorageOrdering::col){
         if(M.is_compress()){
             std::vector<T> prod(M.nrow);// messo 5 nrow finche non imolemento nrow e ncol in privat member
             for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
@@ -145,7 +146,6 @@ std::vector<T> operator * (Matrix<T,S> M, std::vector<T> v){
       }
       return prod;
     }
-    // manca per col sia compree sia uncompress
 }
 
 
