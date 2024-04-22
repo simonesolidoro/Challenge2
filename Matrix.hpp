@@ -8,15 +8,16 @@
 
 namespace algebra{
     enum StorageOrdering{ row,col};
+    enum tipoNorma{uno, inf, F};
     
-    // nuovo comparison operator per map in StorageOrdering per colonne
+    // nuovo comparison operator per map Dati
     template<StorageOrdering S>
     struct cmp{
         bool operator() (std::array<std::size_t,2> const & A, std::array<std::size_t,2> const & B)const{
             if(S==StorageOrdering::col){           
                 if(A[1]<B[1])
                     return true;
-                else if(A[1]==B[1] & A[0]<B[0])
+                else if((A[1]==B[1]) & (A[0]<B[0]))
                     return true;
                 return false;
             }
@@ -176,9 +177,6 @@ std::ostream & operator<<(std::ostream &stream, const Matrix<T,S> &M){
         }
     stream<< "nze: "<<M.nze<<" , "<< "nrow: "<<M.nrow<<" , "<<"ncol: "<<M.ncol<<"\n ";
     return stream;
-
-    // manca compress per row e col
 }
-
 
 };

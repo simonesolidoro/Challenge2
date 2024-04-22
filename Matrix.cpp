@@ -36,9 +36,9 @@ T& Matrix<T,S>::operator() (std::size_t i,std::size_t j){
                 std::exit(1);  
         }
     }
-    if(Dati.find({i,j})==Dati.end()) // se elemento non presente aggiorna ncol nrow
+    if(Dati.find({i,j})==Dati.end()){ // se elemento non presente aggiorna ncol nrow
         resizeNewEl(i,j);
-        nze++;
+        nze++;}
         
     return Dati[{i,j}];        // cosi se poszione(i,j) non presente viene aggiunta
 } 
@@ -202,5 +202,6 @@ void Matrix<T,S>::printvett(){
         std::cout<<x<<" ";
     std::cout<<std::endl;
 }
+
 
 
