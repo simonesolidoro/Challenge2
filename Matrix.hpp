@@ -76,7 +76,7 @@ namespace algebra{
 
             //scalar product matrice vettore
             template <class U, StorageOrdering Z>
-            friend std::vector<U> operator * (Matrix<U,Z>, std::vector<U>);
+            friend std::vector<U> operator * (const Matrix<U,Z> &,const std::vector<U> &);
 
             /// Stream operator. utile per debug
             template <class U, StorageOrdering Z>
@@ -101,7 +101,7 @@ namespace algebra{
 
 
 template <class T, StorageOrdering S> // DA OTTIMIZZARE col e row 
-std::vector<T> operator * (Matrix<T,S> M, std::vector<T> v){
+std::vector<T> operator * (const Matrix<T,S> & M, const std::vector<T> & v){
     if constexpr(S== StorageOrdering::row){
         std::vector<T> prod; //size=numero righe di matrix, poi devi riservare spazio fin da subito
         prod.reserve(M.nrow); 
