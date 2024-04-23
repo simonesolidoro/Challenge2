@@ -48,7 +48,7 @@ namespace algebra{
             Matrix()=default;
 
             // non const call operator che aggiune elemento se non presente o modifica se presente
-            T& operator() (std::size_t ,std::size_t );
+            T& operator() (const std::size_t ,const std::size_t );
 
             // const call operator 
             T operator() (std::size_t ,std::size_t ) const;

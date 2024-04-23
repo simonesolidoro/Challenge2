@@ -15,7 +15,7 @@ Matrix<T,S>::Matrix(unsigned int sz):nze(sz){}
 
 //call operator non cons. exit() termina porprio programma, cerca modo per uscire solo da funzione  
 template <class T, StorageOrdering S>
-T& Matrix<T,S>::operator() (std::size_t i,std::size_t j){
+T& Matrix<T,S>::operator() (const std::size_t i,const std::size_t j){
     if (is_compress()){
         if constexpr(S==StorageOrdering::row){
                 for(unsigned int jj=RowPoint[i]; jj<RowPoint[i+1]; jj++){
