@@ -143,10 +143,13 @@ std::cout<<MM<<std::endl<<NN;
      std::cout<<std::is_same_v(decltype(M*v),std::complex<int>);
 */
 
-
+    // prova read intestato
+    Matrix<double,StorageOrdering::row> M;
+    M.read("matrix_intestata"); 
+    std::cout<<M;
     
 
-    //prova tempo
+/*    //prova tempo
     Matrix<double,StorageOrdering::row> M;
     M.read("matriceprova.mtx"); 
     Matrix<double,StorageOrdering::col> N;
@@ -194,7 +197,7 @@ std::cout<<MM<<std::endl<<NN;
     //C uncompress: Elapsed Time= 8.788000e+02 microsec
 
     //C compress: Elapsed Time= 1.930000e+01 microsec
-
+*/
     return 0;
 } 
 
