@@ -13,7 +13,7 @@ Matrix<T,S>::Matrix(std::map<std::array<std::size_t,2>,T,cmp<S>> D):Dati(D),nze(
 template<class T, StorageOrdering S>
 Matrix<T,S>::Matrix(unsigned int sz):nze(sz){}
 
-//call operator non cons. exit() termina porprio programma, cerca modo per uscire solo da funzione  
+//call operator non cons.   
 template <class T, StorageOrdering S>
 T& Matrix<T,S>::operator() (const std::size_t i,const std::size_t j){
     if (is_compress()){
@@ -22,7 +22,7 @@ T& Matrix<T,S>::operator() (const std::size_t i,const std::size_t j){
                     if(ColIndx[jj]==j)
                         return val[jj];    //ritorna ref a vettore di valori in posizione i j 
                 } 
-                // Da fare: ERRORE SE INDICI NON PRESENTI IN MATRIX.   
+                //ERRORE SE INDICI NON PRESENTI IN MATRIX.   
                 std::cout<<"elemento ("<<i<<", "<<j<<") non presente in compressed matrix"<<std::endl;
                 std::exit(1);  
         }
@@ -31,16 +31,19 @@ T& Matrix<T,S>::operator() (const std::size_t i,const std::size_t j){
                     if(ColIndx[jj]==i)
                         return val[jj];    //ritorna ref a vettore di valori in posizione i j 
                 }
-                // DA Fare: ERRORE SE INDICI NON PRESENTI IN MATRIX 
+                //ERRORE SE INDICI NON PRESENTI IN MATRIX 
                 std::cout<<"elemento ("<<i<<", "<<j<<") non presente in compressed matrix"<<std::endl;
                 std::exit(1);  
         }
     }
     if(Dati.find({i,j})==Dati.end()){ // se elemento non presente aggiorna ncol nrow
         resizeNewEl(i,j);
-        nze++;}
-        
-    return Dati[{i,j}];        // cosi se poszione(i,j) non presente viene aggiunta
+        nze++;
+        return Dati[{i,j}];        // cosi se poszione(i,j) non presente viene aggiunta
+        }
+    return Dati.at({i,j});         //PROBLEMA: se in main chiamo M(i,j) con i,j non presenti ma solo per lettura viene aggiunto {{i,j},0} a Dati
+                                  //SOLUZIONE: fare call op() per lettura e subscri op [] per sovrascrivere o aggiungere 
+    
 } 
 
 // call operator const (lasciato ad utente non richiedere indici fuori da matrice )

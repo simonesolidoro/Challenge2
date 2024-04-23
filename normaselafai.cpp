@@ -26,6 +26,7 @@ T Matrix<T,S>::norma(){
 
 
 in matrix.hpp 
+enum tipoNorma{uno, inf, F};
             // norma 
             template<tipoNorma N>
             T norma();

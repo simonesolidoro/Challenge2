@@ -8,7 +8,6 @@
 
 namespace algebra{
     enum StorageOrdering{ row,col};
-    enum tipoNorma{uno, inf, F};
     
     // nuovo comparison operator per map Dati
     template<StorageOrdering S>
