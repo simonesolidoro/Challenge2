@@ -51,7 +51,7 @@ namespace algebra{
             T& operator() (const std::size_t ,const std::size_t );
 
             // const call operator 
-            T operator() (std::size_t ,std::size_t ) const;
+            T operator() (const std::size_t ,const std::size_t ) const;
            
             // estrae riga k se presente, altrimenti ridà mappa vuota
             std::map<std::array<std::size_t,2>,T> estrai(const std::size_t ) const;
@@ -59,7 +59,7 @@ namespace algebra{
             // resize generale 
             void resizeGen();
 
-            // metodo che aggiorna sz nrow ncol per inserimento nuovo elemento ({i,j}, val)
+            // metodo che aggiorna nrow ncol per inserimento nuovo elemento ({i,j}, val)
             void resizeNewEl(std::size_t, std::size_t);
 
             // compress metod popola vettori per rappresentazione CSR

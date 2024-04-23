@@ -45,7 +45,7 @@ T& Matrix<T,S>::operator() (const std::size_t i,const std::size_t j){
 
 // call operator const (lasciato ad utente non richiedere indici fuori da matrice )
 template <class T,StorageOrdering S>
-T Matrix<T,S>::operator() (std::size_t i,std::size_t j)const{
+T Matrix<T,S>::operator() (const std::size_t i,const std::size_t j)const{
     if(is_compress()){
         if constexpr(S==StorageOrdering::row){
             for(unsigned int jj=RowPoint[i]; jj<RowPoint[i+1]; jj++){
