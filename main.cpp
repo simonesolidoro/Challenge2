@@ -145,7 +145,8 @@ std::cout<<MM<<std::endl<<NN;
 
     // prova read intestato
     Matrix<double,StorageOrdering::row> M;
-    M.read("matrix_intestata"); 
+    //M.read("matriceprova.mtx"); 
+    M.read("matrix_intestata");
     std::cout<<M;
     
 

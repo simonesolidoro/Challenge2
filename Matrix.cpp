@@ -160,7 +160,7 @@ bool Matrix<T,S>::is_compress()const{
    
 }
 
-template<class T, StorageOrdering S>
+/*template<class T, StorageOrdering S>
 void Matrix<T,S>::read(const std::string& filename){
     std::ifstream file(filename);
     if (!file.is_open()) {
@@ -172,6 +172,35 @@ void Matrix<T,S>::read(const std::string& filename){
     T val;
     while(file >> i>> j>> val){
         this->operator()(i,j)=val;
+    }
+}*/
+template<class T, StorageOrdering S>
+void Matrix<T,S>::read(const std::string& filename){
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Error opening file" << std::endl;
+        return;
+    }
+    unsigned int i;
+    unsigned int j;
+    T val;
+        while (std::getline(file, line)) {
+        if (line[0] == '%') {
+            // Skip comments
+            continue;
+        }
+
+        if (!header_read) {
+            std::istringstream iss(line);
+            iss >> nrow >> ncol >> nze;
+            header_read = true;
+        } else {
+            int row, col;
+            double value;
+            std::istringstream iss(line);
+            iss >> row >> col >> value;
+            M(row,col) = value;
+        }
     }
 }
 
