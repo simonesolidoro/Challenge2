@@ -143,12 +143,18 @@ std::cout<<MM<<std::endl<<NN;
      std::cout<<std::is_same_v(decltype(M*v),std::complex<int>);
 */
 
-    // prova read intestato
+/*    // prova read intestato
     Matrix<double,StorageOrdering::row> M;
     //M.read("matriceprova.mtx"); 
-    M.read("matrix_intestata");
+    //M.read("matrix_intestata");
+    M.read("data.txt");
     std::cout<<M;
-    
+*/
+     Matrix<double,StorageOrdering::row> M;
+     M(0,0)=1;
+     M(2,1)=3;
+     std::cout<<M(1,1)<<std::endl;
+     std::cout<<M<<std::endl; 
 
 /*    //prova tempo
     Matrix<double,StorageOrdering::row> M;

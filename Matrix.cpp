@@ -160,9 +160,9 @@ bool Matrix<T,S>::is_compress()const{
    
 }
 
-/*template<class T, StorageOrdering S>
-void Matrix<T,S>::read(const std::string& filename){
-    std::ifstream file(filename);
+/*template<class T, StorageOrdering S>                      OSS: altra versione non serve modificare file togliendo %intro, nrow ncol nze
+void Matrix<T,S>::read(const std::string& filename){             ma if dentro while, uso getline ecc quindi meno efficente. meglio usare questa
+    std::ifstream file(filename);                                versione e modificare a mano file di matrice eliminando %commenti e nrow ncol nze
     if (!file.is_open()) {
         std::cerr << "Error opening file" << std::endl;
         return;
@@ -184,22 +184,22 @@ void Matrix<T,S>::read(const std::string& filename){
     unsigned int i;
     unsigned int j;
     T val;
+    bool rigaInfo = false;
+    std::string line;
         while (std::getline(file, line)) {
         if (line[0] == '%') {
             // Skip comments
             continue;
         }
 
-        if (!header_read) {
+        if (!rigaInfo) {
             std::istringstream iss(line);
-            iss >> nrow >> ncol >> nze;
-            header_read = true;
+            iss >> nrow >> ncol; // non copiato numero non zero element perche quando aggiunge op () aggiunge +1 a nze
+            rigaInfo = true;
         } else {
-            int row, col;
-            double value;
             std::istringstream iss(line);
-            iss >> row >> col >> value;
-            M(row,col) = value;
+            iss >> i >> j >> val;
+            this->operator()(i,j) = val;
         }
     }
 }
