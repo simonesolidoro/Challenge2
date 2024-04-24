@@ -1,3 +1,6 @@
+#ifndef MATRIX_HPP
+#define MATRIX_HPP
+
 #include<iostream>
 #include<array>
 #include<map>
@@ -180,3 +183,5 @@ std::ostream & operator<<(std::ostream &stream, const Matrix<T,S> &M){
 }
 
 };
+
+#endif
