@@ -154,7 +154,10 @@ std::cout<<MM<<std::endl<<NN;
      M(0,0)=1;
      M(2,1)=3;
      std::cout<<M(1,1)<<std::endl;
-     std::cout<<M<<std::endl; 
+     std::cout<<M<<std::endl;
+     std::map<std::array<std::size_t,2>,int> mappa={{{0,0},1},{{1,2},4},{{3,3},2}};
+     Matrix<int,StorageOrdering::col> MM(mappa);
+     std::cout<<MM; 
 
 /*    //prova tempo
     Matrix<double,StorageOrdering::row> M;

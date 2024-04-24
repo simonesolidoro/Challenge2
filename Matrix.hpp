@@ -37,8 +37,11 @@ namespace algebra{
             unsigned int ncol=0; //numero colonne 
         public:
     
-            // costruttore 
+            // costruttore con map con cmp come comparison operator
             Matrix(std::map<std::array<std::size_t,2>,T,cmp<S>>);
+
+            // costruttore con map normale
+            Matrix(std::map<std::array<std::size_t,2>,T>);
 
             // costruttore con size matrix(nze)
             Matrix(unsigned int);

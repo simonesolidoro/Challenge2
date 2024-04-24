@@ -9,6 +9,13 @@ Matrix<T,S>::Matrix(std::map<std::array<std::size_t,2>,T,cmp<S>> D):Dati(D),nze(
     resizeGen();
 }
 
+template <class T, StorageOrdering S>
+Matrix<T,S>::Matrix(std::map<std::array<std::size_t,2>,T> M){
+    for (auto it=M.begin(); it!=M.end(); it++ ){
+        Dati[it->first]=it->second;
+    }
+}
+
 //costruttore sz matrix
 template<class T, StorageOrdering S>
 Matrix<T,S>::Matrix(unsigned int sz):nze(sz){}
