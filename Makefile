@@ -1,6 +1,6 @@
 CXX ?=g++
 CXXFLAGS ?= -std=c++20
-CPPFLAGS ?= -O3 -Wall -I. -I/mnt/c/Users/Cosimo\ Solidoro/Desktop/PACS/Esempi/pacs-examples/Examples/src/Utilities
+CPPFLAGS ?= -O3 -Wall -I. -I./include
 SRC=main.cpp 
 OBJ=main.o
 EXEC=main
