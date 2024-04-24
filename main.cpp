@@ -6,7 +6,7 @@ using namespace algebra;
 
 int main(){
   // prova constructor
-/*   // per righe---------> ok (compila) 
+   // per righe---------> ok (compila) 
     std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::row>> mapR={{{0,0},1},{{0,1},2},{{1,0},3},{{1,1},4}};
     Matrix<int,StorageOrdering::row> MR(mapR); 
 
@@ -14,7 +14,7 @@ int main(){
     std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::col>> mapC={{{0,0},1},{{0,1},3},{{1,0},2},{{1,1},4}};
     //std::map<std::array<std::size_t,2>,int> mapC={{{0,0},1},{{0,1},4},{{1,1},2},{{1,2},5},{{2,2},3},{{2,3},6}};
     Matrix<int,StorageOrdering::col> MC(mapC);
-*/
+
 
  /* //estri--------->ok
     //righe
@@ -30,7 +30,7 @@ int main(){
 */
     
 
-/*    // compress(),uncompress(),is_compress() per R--->ok 
+    // compress(),uncompress(),is_compress() per R--->ok 
     std::cout<<"è compressa (0): "<<MR.is_compress()<<std::endl;
     MR.compress();
     std::cout<<"è compressa (1): "<<MR.is_compress()<<std::endl;
@@ -47,7 +47,7 @@ int main(){
     MC.uncompress();
     std::cout<<"è compressa (0): "<<MC.is_compress()<<std::endl;
     MC.printvett();
-*/
+
 
  /*   // call operator righe
     // non const------>ok 
@@ -86,11 +86,11 @@ int main(){
     std::cout<<"m(0,0)= 1:"<<MC(0,0)<<"m(10,10)=0 :"<<MC(10,10)<<std::endl;
 */
   //prova 
-   /*  std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::col>> mapp={{{0,0},1},{{1,1},2}};
+     std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::col>> mapp={{{0,0},1},{{1,1},2}};
     Matrix<int,StorageOrdering::col> N(mapp);
     std::cout<<N<<std::endl;
      
-   Matrix<int,StorageOrdering::col> M;
+   Matrix<int,StorageOrdering::row> M;
     M(0,1)=3;
     M(0,2)=2;
     M(1,2)=1;
@@ -106,7 +106,7 @@ int main(){
         }
 
     std::cout<<M;
-*/
+
 
 /*// capire se M(i,j) chiamata elemento non presente ridà 0(quindi chiama const ()) o chiama non const () e quindi aggiunto elemento
 Matrix<int,StorageOrdering::row> M;
@@ -150,7 +150,7 @@ std::cout<<MM<<std::endl<<NN;
     M.read("data.txt");
     std::cout<<M;
 */
-     Matrix<double,StorageOrdering::row> M;
+/*     Matrix<double,StorageOrdering::row> M;
      M(0,0)=1;
      M(2,1)=3;
      std::cout<<M(1,1)<<std::endl;
@@ -158,7 +158,7 @@ std::cout<<MM<<std::endl<<NN;
      std::map<std::array<std::size_t,2>,int> mappa={{{0,0},1},{{1,2},4},{{3,3},2}};
      Matrix<int,StorageOrdering::col> MM(mappa);
      std::cout<<MM; 
-
+*/
 /*    //prova tempo
     Matrix<double,StorageOrdering::row> M;
     M.read("matriceprova.mtx"); 
