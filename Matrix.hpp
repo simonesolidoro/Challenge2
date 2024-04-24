@@ -120,9 +120,8 @@ std::vector<T> operator * (const Matrix<T,S> & M, const std::vector<T> & v){
         }
         unsigned int nrow = (M.Dati.rbegin())->first[0];
         for (unsigned int i=0; i<=nrow; i++){   
-            auto R=M.estrai(i);
-            for(auto & x: R){
-                sum+=x.second*v[x.first[1]];
+            for (auto it=M.Dati.lower_bound({i,0}); it!=M.Dati.lower_bound({i+1,0}); it++){
+                sum+=it->second*v[it->first[1]];
             }
             prod.push_back(sum);
             sum=0;
@@ -142,8 +141,7 @@ std::vector<T> operator * (const Matrix<T,S> & M, const std::vector<T> & v){
       unsigned int ncol= (M.Dati.rbegin())->first[1]; //num col in matrice
       std::vector<T> prod(M.nrow); // gia size=nrow perche poi elementi aggiunti con []= e non pushback        
       for (unsigned int t=0; t<=ncol; t++){
-        auto C=M.estrai(t);
-        for (auto it=C.begin(); it!=C.end();it++){
+        for (auto it=M.Dati.lower_bound({0,t}); it!=M.Dati.lower_bound({0,t+1}); it++){
             prod[it->first[0]]+=it->second*v[t];
         }
       }

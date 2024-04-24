@@ -120,27 +120,33 @@ void Matrix<T,S>::resizeNewEl(std::size_t i, std::size_t j){
 // comprime dati-->vectors
 template <class T,StorageOrdering S>
 void Matrix<T,S>::compress(){
-    int a;
     int b;
     if constexpr(S==StorageOrdering::row){
-        a=1;
         b=0;
     }
     if constexpr(S==StorageOrdering::col){
-        a=0;
-        b=0;
+        b=1;
     }
         unsigned int n = (Dati.rbegin())->first[b];//numero righe o colonne
         unsigned int point = 0; //per inserire posizione di primo elemento non vuoto in riga 
         RowPoint.push_back(point); //primo elemento sempre 0;
         for (unsigned int i=0; i<=n; i++){   // <= perchè in Dati.first indice riga/colonna è gia indice che parte da 0
-            auto R=estrai(i);
-            for (auto it=R.begin(); it!=R.end(); it++){
-                val.push_back(it->second);
-                ColIndx.push_back(it->first[a]);
-                point++;
-                }
-            RowPoint.push_back(point);
+            if constexpr(S==StorageOrdering::row){
+                for (auto it=Dati.lower_bound({i,0}); it!=Dati.lower_bound({i+1,0}); it++){
+                    val.push_back(it->second);
+                    ColIndx.push_back(it->first[1]);
+                    point++;
+                    }
+                RowPoint.push_back(point);
+            }
+            if constexpr(S==StorageOrdering::col){
+                for (auto it=Dati.lower_bound({0,i}); it!=Dati.lower_bound({0,i+1}); it++){
+                    val.push_back(it->second);
+                    ColIndx.push_back(it->first[0]);
+                    point++;
+                    }
+                RowPoint.push_back(point);
+            }
         }
         Dati.clear();//svuotata map di dati una volta passati da dinamic a CSR
 }
