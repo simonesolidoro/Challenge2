@@ -1,15 +1,18 @@
-CXX ?=g++
+CXX ?= g++
 CXXFLAGS ?= -std=c++20
 CPPFLAGS ?= -O3 -Wall -I. -I./include
-SRC=main.cpp 
-OBJ=main.o
-EXEC=main
+SRC = main.cpp Matrix.cpp
+OBJ = $(SRC:.cpp=.o)
+EXEC = main
 
 $(EXEC): $(OBJ)
-	$(CXX) $(CXXFLAGS) $(OBJ) $(CPPFLAGS) -o $(EXEC)	
-$(OBJ): 
-	$(CXX) $(CXXFLAGS) $(SRC) $(CPPFLAGS) -o $(OBJ) -c 
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OBJ) -o $(EXEC)
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< $(CPPFLAGS) -o $@
+
 clean:
-	rm $(OBJ)
+	rm -f $(OBJ)
+
 distclean:
-	rm $(OBJ) $(EXEC) 
+	rm -f $(OBJ) $(EXEC)
