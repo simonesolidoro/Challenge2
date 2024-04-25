@@ -19,6 +19,9 @@ int main(){
     std::cout<<MR<<std::endl;
     std::cout<<MC<<std::endl;
 
+    Matrix<int,StorageOrdering::row> A(10,11);
+    std::cout<<A<<std::endl;
+
 
  /* //estri--------->ok
     //righe

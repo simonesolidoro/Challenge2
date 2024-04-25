@@ -46,8 +46,8 @@ namespace algebra{
             // costruttore con map normale
             Matrix(std::map<std::array<std::size_t,2>,T>);
 
-            // costruttore con size matrix(nze)
-            Matrix(unsigned int);
+            // costruttore con size matrix(nrow,ncol)
+            Matrix(unsigned int, unsigned int);
 
             //Default costruttore
             Matrix()=default;
