@@ -17,7 +17,7 @@ Matrix<T,S>::Matrix(std::map<std::array<std::size_t,2>,T> M){
     resizeGen();
 }
 
-//costruttore sz matrix
+//costruttore sz matrix(size= nrighe ncol)
 template<class T, StorageOrdering S>
 Matrix<T,S>::Matrix(unsigned int row, unsigned int col):nrow(row),ncol(col){}
 
@@ -46,7 +46,6 @@ T& Matrix<T,S>::operator() (const std::size_t i,const std::size_t j){
     }
     if(Dati.find({i,j})==Dati.end()){ // se elemento non presente aggiorna ncol nrow
         resizeNewEl(i,j);
-        nze++;
         return Dati[{i,j}];        // cosi se poszione(i,j) non presente viene aggiunta
         }
     return Dati.at({i,j});         //PROBLEMA: se in main chiamo M(i,j) con i,j non presenti ma solo per lettura viene aggiunto {{i,j},0} a Dati
@@ -79,7 +78,7 @@ T Matrix<T,S>::operator() (const std::size_t i,const std::size_t j)const{
         return 0;
 }
 
-// metodo che estrae riga k
+// metodo che estrae riga/colonna k e restituisce copia.
 template <class T,StorageOrdering S>
 std::map<std::array<std::size_t,2>,T> Matrix<T,S>::estrai(const std::size_t k) const{
     std::map<std::array<std::size_t,2>,T> riga; //map contenente riga K/o colonna
@@ -96,7 +95,7 @@ std::map<std::array<std::size_t,2>,T> Matrix<T,S>::estrai(const std::size_t k) c
 
 }
 
-// resize generale
+// resize generale di nze, nrow, ncol
 template<class T, StorageOrdering S>
 void Matrix<T,S>::resizeGen(){
     nze=Dati.size();
@@ -125,6 +124,7 @@ void Matrix<T,S>::resizeNewEl(std::size_t i, std::size_t j){
         nrow=i+1;
     if(j>=ncol)
         ncol=j+1;
+    nze++;
 }
 
 // comprime dati-->vectors
