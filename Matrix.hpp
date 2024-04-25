@@ -32,8 +32,8 @@ namespace algebra{
     class Matrix {
         private:  
             std::map<std::array<std::size_t,2>,T,cmp<S>> Dati;  //cmp per col
-            std::vector<std::size_t> ColIndx;   //RowIndx     //OSS: nomi "azzeccati" per row_order ma usati identici in col_order 
-            std::vector<std::size_t> RowPoint;  //ColPoint
+            std::vector<std::size_t> ColIndx;   //RowIndx     //OSS: nomi "azzeccati" per row_order ma usati in col_order (ColIndex->RowIndex)
+            std::vector<std::size_t> RowPoint;  //ColPoint                                                                (RowPoint->ColPoint)
             std::vector<T> val;
             unsigned int nze=0; // numero non zero element
             unsigned int nrow=0; //numero righe
@@ -136,7 +136,7 @@ std::vector<T> operator * (const Matrix<T,S> & M, const std::vector<T> & v){
             std::vector<T> prod(M.nrow);// messo 5 nrow finche non imolemento nrow e ncol in privat member
             for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
                 for(unsigned int j=M.RowPoint[i]; j<M.RowPoint[i+1]; j++)
-                    prod[M.ColIndx[j]]+=M.val[j] *v[i]; // i indice colonna, Colindx[j]= riga, j scorre ColIndex e quindi val
+                    prod[M.ColIndx[j]]+=M.val[j] *v[i]; // i indice colonna, Colindx[j]= riga, j scorre Index e quindi val
             }
             return prod;
         }

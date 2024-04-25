@@ -6,15 +6,19 @@ using namespace algebra;
 
 int main(){
   // prova constructor
-  /* // per righe---------> ok (compila) 
-    std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::row>> mapR={{{0,0},1},{{0,1},2},{{1,0},3},{{1,1},4}};
+   // per righe---------> ok (compila) 
+    std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::row>> mapR={{{0,1},1},{{1,1},2},{{1,0},3},{{1,1},4}};
     Matrix<int,StorageOrdering::row> MR(mapR); 
+    
 
    //per colonne---------> ok 
-    std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::col>> mapC={{{0,0},1},{{0,1},3},{{1,0},2},{{1,1},4}};
+    std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::col>> mapC={{{0,1},1},{{1,1},3},{{1,0},2},{{1,1},4}};
     //std::map<std::array<std::size_t,2>,int> mapC={{{0,0},1},{{0,1},4},{{1,1},2},{{1,2},5},{{2,2},3},{{2,3},6}};
     Matrix<int,StorageOrdering::col> MC(mapC);
-*/
+
+    std::cout<<MR<<std::endl;
+    std::cout<<MC<<std::endl;
+
 
  /* //estri--------->ok
     //righe
@@ -159,7 +163,7 @@ std::cout<<MM<<std::endl<<NN;
      Matrix<int,StorageOrdering::col> MM(mappa);
      std::cout<<MM; 
 */
-    //prova tempo
+/*    //prova tempo
     Matrix<double,StorageOrdering::row> M;
     M.read("matriceprova.mtx"); 
     Matrix<double,StorageOrdering::col> N;
@@ -207,7 +211,7 @@ std::cout<<MM<<std::endl<<NN;
     //C uncompress: Elapsed Time= 8.788000e+02 microsec
 
     //C compress: Elapsed Time= 1.930000e+01 microsec
-
+*/
     return 0;
 } 
 

@@ -14,6 +14,7 @@ Matrix<T,S>::Matrix(std::map<std::array<std::size_t,2>,T> M){
     for (auto it=M.begin(); it!=M.end(); it++ ){
         Dati[it->first]=it->second;
     }
+    resizeGen();
 }
 
 //costruttore sz matrix
@@ -99,11 +100,20 @@ std::map<std::array<std::size_t,2>,T> Matrix<T,S>::estrai(const std::size_t k) c
 template<class T, StorageOrdering S>
 void Matrix<T,S>::resizeGen(){
     nze=Dati.size();
-    for (auto it=Dati.begin(); it!= Dati.end(); it++){
-        if (it->first[0]>=nrow)
-            nrow=(it->first[0])+1; //+1 perche elemnti di matrice partono da 0, nrow e ncol invce sono numero esatto di colonne e righe 
-        if(it->first[1]>=ncol)
-            ncol=(it->first[1])+1;
+    auto ultimo=Dati.rbegin();
+    if constexpr(S== StorageOrdering::row){
+        nrow=(ultimo->first[0])+1; //+1 perche elemnti di matrice partono da 0, nrow e ncol invce sono numero esatto di colonne e righe 
+        for (auto it=Dati.begin(); it!= Dati.end(); it++){
+            if(it->first[1]>=ncol)
+                ncol=(it->first[1])+1;
+        }
+    } 
+    if constexpr(S== StorageOrdering::col){
+        ncol=(ultimo->first[1])+1; //+1 perche elemnti di matrice partono da 0, nrow e ncol invce sono numero esatto di colonne e righe 
+        for (auto it=Dati.begin(); it!= Dati.end(); it++){
+            if(it->first[0]>=nrow)
+                nrow=(it->first[0])+1;
+        }
     }   
 }
 
