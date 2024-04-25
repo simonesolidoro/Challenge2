@@ -187,7 +187,7 @@ bool Matrix<T,S>::is_compress()const{
 }
 
 /*template<class T, StorageOrdering S>                      OSS: altra versione non serve modificare file togliendo %intro, nrow ncol nze
-void Matrix<T,S>::read(const std::string& filename){             ma if dentro while, uso getline ecc quindi meno efficente. meglio usare questa
+void Matrix<T,S>::read(const std::string& filename){             ma c'è:if dentro while, uso getline ecc quindi meno efficente. meglio usare questa
     std::ifstream file(filename);                                versione e modificare a mano file di matrice eliminando %commenti e nrow ncol nze
     if (!file.is_open()) {
         std::cerr << "Error opening file" << std::endl;
@@ -252,7 +252,7 @@ void Matrix<T,S>::printvett(){
      for (T x: val)
         std::cout<<x<<" ";
     std::cout<<std::endl;
-    std::cout<<"Roepoint: ";
+    std::cout<<"Rowpoint: ";
      for (unsigned int x: RowPoint)
         std::cout<<x<<" ";
     std::cout<<std::endl;
