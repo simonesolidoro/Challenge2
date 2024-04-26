@@ -48,7 +48,7 @@ namespace algebra{
             Matrix(std::map<std::array<std::size_t,2>,T>);
 
             // costruttore con size matrix(nrow,ncol)
-            Matrix(const unsigned int,const unsigned int);
+            Matrix(unsigned int, unsigned int);
 
             //Default costruttore
             Matrix()=default;

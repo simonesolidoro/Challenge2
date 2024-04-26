@@ -19,7 +19,7 @@ Matrix<T,S>::Matrix(std::map<std::array<std::size_t,2>,T> M){
 
 //costruttore sz matrix(size= nrighe ncol)
 template<class T, StorageOrdering S>
-Matrix<T,S>::Matrix(unsigned int row, unsigned int col):nrow(row),ncol(col){}
+Matrix<T,S>::Matrix(const unsigned int row, const unsigned int col):nrow(row),ncol(col){}
 
 //call operator non cons.   
 template <class T, StorageOrdering S>

@@ -92,7 +92,7 @@ int main(){
     const Matrix<int,StorageOrdering::col> MC(mapC);
     std::cout<<"m(0,0)= 1:"<<MC(0,0)<<"m(10,10)=0 :"<<MC(10,10)<<std::endl;
 */
-  //prova 
+/*  //prova operator *
     Matrix<int,StorageOrdering::row> M;
     M(0,1)=3;
     M(0,2)=2;
@@ -117,7 +117,7 @@ int main(){
         }
 
     std::cout<<M;
-
+*/
 
 /* // capire se M(i,j) chiamata elemento non presente ridà 0(quindi chiama const ()) o chiama non const () e quindi aggiunto elemento
 Matrix<int,StorageOrdering::row> M;
@@ -170,7 +170,7 @@ std::cout<<MM<<std::endl<<NN;
      Matrix<int,StorageOrdering::col> MM(mappa);
      std::cout<<MM; 
 */
-/*    //prova tempo
+    //prova tempo
     Matrix<double,StorageOrdering::row> M;
     M.read("matriceprova.mtx"); 
     Matrix<double,StorageOrdering::col> N;
@@ -218,7 +218,7 @@ std::cout<<MM<<std::endl<<NN;
     //C uncompress: Elapsed Time= 8.788000e+02 microsec
 
     //C compress: Elapsed Time= 1.930000e+01 microsec
-*/
+
     return 0;
 } 
 
