@@ -84,6 +84,7 @@ namespace algebra{
             template <class U, StorageOrdering Z>
             friend std::vector<U> operator * (const Matrix<U,Z> &,const std::vector<U> &);
 
+            // overload version per gestire casi in cui valori di M e/o di v siano complex
             template <class U, StorageOrdering Z>
             friend std::vector<std::complex<U>> operator * (const Matrix<std::complex<U>,Z> &,const std::vector<U> &);
 
@@ -309,7 +310,6 @@ std::vector<std::complex<T>> operator * (const Matrix<std::complex<T>,S> & M,con
 
 template <class T, StorageOrdering S>
 std::ostream & operator<<(std::ostream &stream, Matrix<T,S> &M){
-    // per uncompress form sia row sia col
     stream << std::setprecision(std::numeric_limits<T>::digits10 + 1);
     stream.setf(std::ios_base::scientific, std::ios_base::floatfield);
     for (auto j = M.Dati.begin(); j != M.Dati.end(); ++j)
@@ -318,8 +318,6 @@ std::ostream & operator<<(std::ostream &stream, Matrix<T,S> &M){
         }
     stream<< "nze: "<<M.nze<<" , "<< "nrow: "<<M.nrow<<" , "<<"ncol: "<<M.ncol<<"\n ";
     return stream;
-
-    // manca compress per row e col
 }
 
 template <class T, StorageOrdering S>
