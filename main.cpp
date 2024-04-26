@@ -99,6 +99,7 @@ int main(){
     M(1,2)=1;
     M(2,1)=4;
     M(2,2)=2;
+    M.compress();
      
    Matrix<std::complex<int>,StorageOrdering::row> Mc;
     Mc(0,1)=3;
@@ -106,7 +107,8 @@ int main(){
     Mc(1,2)=1;
     Mc(2,1)=4;
     Mc(2,2)=2;
-    std::vector<int> v={1, 2, 3};
+    Mc.compress();
+    std::vector<std::complex<int>> v={1, 2, 3};
     std::vector<std::complex<int>> sol;
     //sol=M*v;
     sol=operator*(M,v);

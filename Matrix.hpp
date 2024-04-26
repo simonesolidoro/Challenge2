@@ -118,7 +118,6 @@ namespace algebra{
 
 template <class T, StorageOrdering S> 
 std::vector<T> operator * (const Matrix<T,S> & M, const std::vector<T> & v){
-    std::cout<<"chiamata T T T \n";
     if constexpr(S== StorageOrdering::row){
         std::vector<T> prod; //size=numero righe di matrix, poi devi riservare spazio fin da subito
         prod.reserve(M.nrow); 
@@ -167,7 +166,6 @@ std::vector<T> operator * (const Matrix<T,S> & M, const std::vector<T> & v){
 // overload di operator* per complex
 template <class T, StorageOrdering S>
 std::vector<std::complex<T>> operator * (const Matrix<std::complex<T>,S> & M,const std::vector<T> & v){
-    std::cout<<"chiamata complex complex T \n";
     if constexpr(S== StorageOrdering::row){
         std::vector<std::complex<T>> prod; //size=numero righe di matrix, poi devi riservare spazio fin da subito
         prod.reserve(M.nrow); 
@@ -215,7 +213,6 @@ std::vector<std::complex<T>> operator * (const Matrix<std::complex<T>,S> & M,con
 
 template <class T, StorageOrdering S>
 std::vector<std::complex<T>> operator * (const Matrix<T,S> & M,const std::vector<std::complex<T>> & v){
-    std::cout<<"chiamata complex T complex \n";
     if constexpr(S== StorageOrdering::row){
         std::vector<std::complex<T>> prod; //size=numero righe di matrix, poi devi riservare spazio fin da subito
         prod.reserve(M.nrow); 
@@ -263,7 +260,6 @@ std::vector<std::complex<T>> operator * (const Matrix<T,S> & M,const std::vector
 
 template <class T, StorageOrdering S>
 std::vector<std::complex<T>> operator * (const Matrix<std::complex<T>,S> & M,const std::vector<std::complex<T>> & v){
-    std::cout<<"chiamata complex complex complex \n";
     if constexpr(S== StorageOrdering::row){
         std::vector<std::complex<T>> prod; //size=numero righe di matrix, poi devi riservare spazio fin da subito
         prod.reserve(M.nrow); 
