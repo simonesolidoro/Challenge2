@@ -8,7 +8,8 @@
 #include <complex>
 #include <fstream>
 #include <iomanip>
-
+//#include <any>
+#include<variant>
 namespace algebra{
     enum StorageOrdering{ row,col};
     
@@ -61,7 +62,7 @@ namespace algebra{
             // estrae riga k se presente, altrimenti ridà mappa vuota
             std::map<std::array<std::size_t,2>,T> estrai(const std::size_t ) const;
 
-            // resize generale 
+            // resize nze ncol nrow 
             void resizeGen();
 
             // metodo che aggiorna nrow ncol per inserimento nuovo elemento ({i,j}, val)
@@ -82,6 +83,16 @@ namespace algebra{
             //scalar product matrice vettore
             template <class U, StorageOrdering Z>
             friend std::vector<U> operator * (const Matrix<U,Z> &,const std::vector<U> &);
+
+            template <class U, StorageOrdering Z>
+            friend std::vector<std::complex<U>> operator * (const Matrix<std::complex<U>,Z> &,const std::vector<U> &);
+
+            template <class U, StorageOrdering Z>
+            friend std::vector<std::complex<U>> operator * (const Matrix<U,Z> &,const std::vector<std::complex<U>> &);
+
+            template <class U, StorageOrdering Z>
+            friend std::vector<std::complex<U>> operator * (const Matrix<std::complex<U>,Z> &,const std::vector<std::complex<U>> &);
+
 
             /// Stream operator. utile per debug
             template <class U, StorageOrdering Z>
@@ -105,8 +116,9 @@ namespace algebra{
     };
 
 
-template <class T, StorageOrdering S> // DA OTTIMIZZARE col e row 
+template <class T, StorageOrdering S> 
 std::vector<T> operator * (const Matrix<T,S> & M, const std::vector<T> & v){
+    std::cout<<"chiamata T T T \n";
     if constexpr(S== StorageOrdering::row){
         std::vector<T> prod; //size=numero righe di matrix, poi devi riservare spazio fin da subito
         prod.reserve(M.nrow); 
@@ -143,6 +155,151 @@ std::vector<T> operator * (const Matrix<T,S> & M, const std::vector<T> & v){
       //uncompress()
       unsigned int ncol= (M.Dati.rbegin())->first[1]; //num col in matrice
       std::vector<T> prod(M.nrow); // gia size=nrow perche poi elementi aggiunti con []= e non pushback        
+      for (unsigned int t=0; t<=ncol; t++){
+        for (auto it=M.Dati.lower_bound({0,t}); it!=M.Dati.lower_bound({0,t+1}); it++){
+            prod[it->first[0]]+=it->second*v[t];
+        }
+      }
+      return prod;
+    }
+}
+
+// overload di operator* per complex
+template <class T, StorageOrdering S>
+std::vector<std::complex<T>> operator * (const Matrix<std::complex<T>,S> & M,const std::vector<T> & v){
+    std::cout<<"chiamata complex complex T \n";
+    if constexpr(S== StorageOrdering::row){
+        std::vector<std::complex<T>> prod; //size=numero righe di matrix, poi devi riservare spazio fin da subito
+        prod.reserve(M.nrow); 
+        std::complex<T> sum=0;
+        if(M.is_compress()){ // da ottimizzare, variabile sum superflua credo possibile prod.push_back() e poi prod[]=+..
+            for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
+                for(unsigned int j=M.RowPoint[i]; j<M.RowPoint[i+1]; j++){
+                    sum+=v[M.ColIndx[j]]*M.val[j];
+                }
+                prod.push_back(sum);
+                sum=0;
+            }
+            return prod;
+        }
+        unsigned int nrow = (M.Dati.rbegin())->first[0];
+        for (unsigned int i=0; i<=nrow; i++){   
+            for (auto it=M.Dati.lower_bound({i,0}); it!=M.Dati.lower_bound({i+1,0}); it++){
+                sum+=it->second*v[it->first[1]];
+            }
+            prod.push_back(sum);
+            sum=0;
+            }
+        return prod;
+    }
+    if constexpr (S==StorageOrdering::col){
+        if(M.is_compress()){
+            std::vector<std::complex<T>> prod(M.nrow);// messo 5 nrow finche non imolemento nrow e ncol in privat member
+            for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
+                for(unsigned int j=M.RowPoint[i]; j<M.RowPoint[i+1]; j++)
+                    prod[M.ColIndx[j]]+=M.val[j] *v[i]; // i indice colonna, Colindx[j]= riga, j scorre Index e quindi val
+            }
+            return prod;
+        }
+      //uncompress()
+      unsigned int ncol= (M.Dati.rbegin())->first[1]; //num col in matrice
+      std::vector<std::complex<T>> prod(M.nrow); // gia size=nrow perche poi elementi aggiunti con []= e non pushback        
+      for (unsigned int t=0; t<=ncol; t++){
+        for (auto it=M.Dati.lower_bound({0,t}); it!=M.Dati.lower_bound({0,t+1}); it++){
+            prod[it->first[0]]+=it->second*v[t];
+        }
+      }
+      return prod;
+    }
+}
+
+template <class T, StorageOrdering S>
+std::vector<std::complex<T>> operator * (const Matrix<T,S> & M,const std::vector<std::complex<T>> & v){
+    std::cout<<"chiamata complex T complex \n";
+    if constexpr(S== StorageOrdering::row){
+        std::vector<std::complex<T>> prod; //size=numero righe di matrix, poi devi riservare spazio fin da subito
+        prod.reserve(M.nrow); 
+        std::complex<T> sum=0;
+        if(M.is_compress()){ // da ottimizzare, variabile sum superflua credo possibile prod.push_back() e poi prod[]=+..
+            for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
+                for(unsigned int j=M.RowPoint[i]; j<M.RowPoint[i+1]; j++){
+                    sum+=v[M.ColIndx[j]]*M.val[j];
+                }
+                prod.push_back(sum);
+                sum=0;
+            }
+            return prod;
+        }
+        unsigned int nrow = (M.Dati.rbegin())->first[0];
+        for (unsigned int i=0; i<=nrow; i++){   
+            for (auto it=M.Dati.lower_bound({i,0}); it!=M.Dati.lower_bound({i+1,0}); it++){
+                sum+=it->second*v[it->first[1]];
+            }
+            prod.push_back(sum);
+            sum=0;
+            }
+        return prod;
+    }
+    if constexpr (S==StorageOrdering::col){
+        if(M.is_compress()){
+            std::vector<std::complex<T>> prod(M.nrow);// messo 5 nrow finche non imolemento nrow e ncol in privat member
+            for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
+                for(unsigned int j=M.RowPoint[i]; j<M.RowPoint[i+1]; j++)
+                    prod[M.ColIndx[j]]+=M.val[j] *v[i]; // i indice colonna, Colindx[j]= riga, j scorre Index e quindi val
+            }
+            return prod;
+        }
+      //uncompress()
+      unsigned int ncol= (M.Dati.rbegin())->first[1]; //num col in matrice
+      std::vector<std::complex<T>> prod(M.nrow); // gia size=nrow perche poi elementi aggiunti con []= e non pushback        
+      for (unsigned int t=0; t<=ncol; t++){
+        for (auto it=M.Dati.lower_bound({0,t}); it!=M.Dati.lower_bound({0,t+1}); it++){
+            prod[it->first[0]]+=it->second*v[t];
+        }
+      }
+      return prod;
+    }
+}
+
+template <class T, StorageOrdering S>
+std::vector<std::complex<T>> operator * (const Matrix<std::complex<T>,S> & M,const std::vector<std::complex<T>> & v){
+    std::cout<<"chiamata complex complex complex \n";
+    if constexpr(S== StorageOrdering::row){
+        std::vector<std::complex<T>> prod; //size=numero righe di matrix, poi devi riservare spazio fin da subito
+        prod.reserve(M.nrow); 
+        std::complex<T> sum=0;
+        if(M.is_compress()){ // da ottimizzare, variabile sum superflua credo possibile prod.push_back() e poi prod[]=+..
+            for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
+                for(unsigned int j=M.RowPoint[i]; j<M.RowPoint[i+1]; j++){
+                    sum+=v[M.ColIndx[j]]*M.val[j];
+                }
+                prod.push_back(sum);
+                sum=0;
+            }
+            return prod;
+        }
+        unsigned int nrow = (M.Dati.rbegin())->first[0];
+        for (unsigned int i=0; i<=nrow; i++){   
+            for (auto it=M.Dati.lower_bound({i,0}); it!=M.Dati.lower_bound({i+1,0}); it++){
+                sum+=it->second*v[it->first[1]];
+            }
+            prod.push_back(sum);
+            sum=0;
+            }
+        return prod;
+    }
+    if constexpr (S==StorageOrdering::col){
+        if(M.is_compress()){
+            std::vector<std::complex<T>> prod(M.nrow);// messo 5 nrow finche non imolemento nrow e ncol in privat member
+            for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
+                for(unsigned int j=M.RowPoint[i]; j<M.RowPoint[i+1]; j++)
+                    prod[M.ColIndx[j]]+=M.val[j] *v[i]; // i indice colonna, Colindx[j]= riga, j scorre Index e quindi val
+            }
+            return prod;
+        }
+      //uncompress()
+      unsigned int ncol= (M.Dati.rbegin())->first[1]; //num col in matrice
+      std::vector<std::complex<T>> prod(M.nrow); // gia size=nrow perche poi elementi aggiunti con []= e non pushback        
       for (unsigned int t=0; t<=ncol; t++){
         for (auto it=M.Dati.lower_bound({0,t}); it!=M.Dati.lower_bound({0,t+1}); it++){
             prod[it->first[0]]+=it->second*v[t];

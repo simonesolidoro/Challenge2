@@ -7,7 +7,7 @@ using namespace algebra;
 int main(){
   // prova constructor
    // per righe---------> ok (compila) 
-    std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::row>> mapR={{{0,1},1},{{1,1},2},{{1,0},3},{{1,1},4}};
+/*   std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::row>> mapR={{{0,1},1},{{1,1},2},{{1,0},3},{{1,1},4}};
     Matrix<int,StorageOrdering::row> MR(mapR); 
     
 
@@ -21,7 +21,7 @@ int main(){
 
     Matrix<int,StorageOrdering::row> A(10,11);
     std::cout<<A<<std::endl;
-
+*/
 
  /* //estri--------->ok
     //righe
@@ -93,19 +93,21 @@ int main(){
     std::cout<<"m(0,0)= 1:"<<MC(0,0)<<"m(10,10)=0 :"<<MC(10,10)<<std::endl;
 */
   //prova 
-/*     std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::col>> mapp={{{0,0},1},{{1,1},2}};
-    Matrix<int,StorageOrdering::col> N(mapp);
-    std::cout<<N<<std::endl;
-     
-   Matrix<int,StorageOrdering::row> M;
+    Matrix<int,StorageOrdering::row> M;
     M(0,1)=3;
     M(0,2)=2;
     M(1,2)=1;
     M(2,1)=4;
     M(2,2)=2;
-    M.compress();
+     
+   Matrix<std::complex<int>,StorageOrdering::row> Mc;
+    Mc(0,1)=3;
+    Mc(0,2)=2;
+    Mc(1,2)=1;
+    Mc(2,1)=4;
+    Mc(2,2)=2;
     std::vector<int> v={1, 2, 3};
-    std::vector<int> sol;
+    std::vector<std::complex<int>> sol;
     //sol=M*v;
     sol=operator*(M,v);
     for(auto x: sol){
@@ -113,7 +115,7 @@ int main(){
         }
 
     std::cout<<M;
-*/
+
 
 /* // capire se M(i,j) chiamata elemento non presente ridà 0(quindi chiama const ()) o chiama non const () e quindi aggiunto elemento
 Matrix<int,StorageOrdering::row> M;
