@@ -7,12 +7,12 @@ using namespace algebra;
 int main(){
   // prova constructor
    // per righe---------> ok (compila) 
-/*   std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::row>> mapR={{{0,1},1},{{1,1},2},{{1,0},3},{{1,1},4}};
+   std::map<std::array<std::size_t,2>,int> mapR={{{0,1},1},{{1,1},2},{{1,0},3},{{1,1},4}}; //,cmp<StorageOrdering::row>
     Matrix<int,StorageOrdering::row> MR(mapR); 
     
 
    //per colonne---------> ok 
-    std::map<std::array<std::size_t,2>,int,cmp<StorageOrdering::col>> mapC={{{0,1},1},{{1,1},3},{{1,0},2},{{1,1},4}};
+    std::map<std::array<std::size_t,2>,int> mapC={{{0,1},1},{{1,1},3},{{1,0},2},{{1,1},4}}; //,cmp<StorageOrdering::col>
     //std::map<std::array<std::size_t,2>,int> mapC={{{0,0},1},{{0,1},4},{{1,1},2},{{1,2},5},{{2,2},3},{{2,3},6}};
     Matrix<int,StorageOrdering::col> MC(mapC);
 
@@ -21,7 +21,7 @@ int main(){
 
     Matrix<int,StorageOrdering::row> A(10,11);
     std::cout<<A<<std::endl;
-*/
+
 
  /* //estri--------->ok
     //righe
