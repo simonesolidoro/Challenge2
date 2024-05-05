@@ -1,9 +1,13 @@
 # Challenge2
 
 Questa repo contiene:
+
 -l'implementazione della classe template Matrix, rappresentante una matrice sparsa, nel namespace Algebra.
+
 -Test prodotto matrice-vettore con Chrono utility (main.cpp).
+
 -Matrice in matrix market form (matrice_intestata).
+
 (-./doc, ./include, Makefile)
 
 
