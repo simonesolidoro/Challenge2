@@ -8,9 +8,9 @@ using namespace algebra;
 int main(){
     // test whit chrono utility
     Matrix<double,StorageOrdering::row> M;
-    M.read("matriceprova.mtx"); 
+    M.read("matrix_intestata"); 
     Matrix<double,StorageOrdering::col> N;
-    N.read("matriceprova.mtx"); 
+    N.read("matrix_intestata"); 
 
     std::vector<double> v(M.getNrow(),2); 
 
@@ -47,5 +47,6 @@ int main(){
     std::cout<< "Colum-major uncompress: "<<tempoCU<<std::endl;
     std::cout<< "Column-major compress: "<<tempoCC<<std::endl;
     // risultati confermano compress piu veloce sia in row sia in col
+
     return 0;
 }

@@ -74,9 +74,9 @@ namespace algebra{
             // uncompress metod popola Dati e svuota vettori (CSR->COOmap)
             void uncompress();
 
-            // check se forma compressa o uncompress: se mappa di dati vuota e vettori hanno almeno un valore->true
-            //                                        se inizializzata vuota-> false
-            //                                        se map dati popolata-> false 
+            // check se forma compressa : se mappa di dati vuota e vettori hanno almeno un valore->true
+            //                            se inizializzata vuota-> false
+            //                            se map dati popolata-> false 
             //oss: per scontato che non si verifichi mai caso dati e vettori popolati contemporanemnte(per costruzione metodi e constructor)
             bool is_compress()const;
 
@@ -120,10 +120,10 @@ namespace algebra{
 template <class T, StorageOrdering S> 
 std::vector<T> operator * (const Matrix<T,S> & M, const std::vector<T> & v){
     if constexpr(S== StorageOrdering::row){
-        std::vector<T> prod; //size=numero righe di matrix, poi devi riservare spazio fin da subito
+        std::vector<T> prod; 
         prod.reserve(M.nrow); 
         T sum=0;
-        if(M.is_compress()){ // da ottimizzare, variabile sum superflua credo possibile prod.push_back() e poi prod[]=+..
+        if(M.is_compress()){ 
             for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
                 for(unsigned int j=M.RowPoint[i]; j<M.RowPoint[i+1]; j++){
                     sum+=v[M.ColIndx[j]]*M.val[j];
@@ -145,7 +145,7 @@ std::vector<T> operator * (const Matrix<T,S> & M, const std::vector<T> & v){
     }
     if constexpr (S==StorageOrdering::col){
         if(M.is_compress()){
-            std::vector<T> prod(M.nrow);// messo 5 nrow finche non imolemento nrow e ncol in privat member
+            std::vector<T> prod(M.nrow);
             for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
                 for(unsigned int j=M.RowPoint[i]; j<M.RowPoint[i+1]; j++)
                     prod[M.ColIndx[j]]+=M.val[j] *v[i]; // i indice colonna, Colindx[j]= riga, j scorre Index e quindi val
@@ -171,7 +171,7 @@ std::vector<std::complex<T>> operator * (const Matrix<std::complex<T>,S> & M,con
         std::vector<std::complex<T>> prod; //size=numero righe di matrix, poi devi riservare spazio fin da subito
         prod.reserve(M.nrow); 
         std::complex<T> sum=0;
-        if(M.is_compress()){ // da ottimizzare, variabile sum superflua credo possibile prod.push_back() e poi prod[]=+..
+        if(M.is_compress()){ 
             for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
                 for(unsigned int j=M.RowPoint[i]; j<M.RowPoint[i+1]; j++){
                     sum+=v[M.ColIndx[j]]*M.val[j];
@@ -193,7 +193,7 @@ std::vector<std::complex<T>> operator * (const Matrix<std::complex<T>,S> & M,con
     }
     if constexpr (S==StorageOrdering::col){
         if(M.is_compress()){
-            std::vector<std::complex<T>> prod(M.nrow);// messo 5 nrow finche non imolemento nrow e ncol in privat member
+            std::vector<std::complex<T>> prod(M.nrow);
             for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
                 for(unsigned int j=M.RowPoint[i]; j<M.RowPoint[i+1]; j++)
                     prod[M.ColIndx[j]]+=M.val[j] *v[i]; // i indice colonna, Colindx[j]= riga, j scorre Index e quindi val
@@ -218,7 +218,7 @@ std::vector<std::complex<T>> operator * (const Matrix<T,S> & M,const std::vector
         std::vector<std::complex<T>> prod; //size=numero righe di matrix, poi devi riservare spazio fin da subito
         prod.reserve(M.nrow); 
         std::complex<T> sum=0;
-        if(M.is_compress()){ // da ottimizzare, variabile sum superflua credo possibile prod.push_back() e poi prod[]=+..
+        if(M.is_compress()){ 
             for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
                 for(unsigned int j=M.RowPoint[i]; j<M.RowPoint[i+1]; j++){
                     sum+=v[M.ColIndx[j]]*M.val[j];
@@ -240,7 +240,7 @@ std::vector<std::complex<T>> operator * (const Matrix<T,S> & M,const std::vector
     }
     if constexpr (S==StorageOrdering::col){
         if(M.is_compress()){
-            std::vector<std::complex<T>> prod(M.nrow);// messo 5 nrow finche non imolemento nrow e ncol in privat member
+            std::vector<std::complex<T>> prod(M.nrow);
             for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
                 for(unsigned int j=M.RowPoint[i]; j<M.RowPoint[i+1]; j++)
                     prod[M.ColIndx[j]]+=M.val[j] *v[i]; // i indice colonna, Colindx[j]= riga, j scorre Index e quindi val
@@ -265,7 +265,7 @@ std::vector<std::complex<T>> operator * (const Matrix<std::complex<T>,S> & M,con
         std::vector<std::complex<T>> prod; //size=numero righe di matrix, poi devi riservare spazio fin da subito
         prod.reserve(M.nrow); 
         std::complex<T> sum=0;
-        if(M.is_compress()){ // da ottimizzare, variabile sum superflua credo possibile prod.push_back() e poi prod[]=+..
+        if(M.is_compress()){ 
             for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
                 for(unsigned int j=M.RowPoint[i]; j<M.RowPoint[i+1]; j++){
                     sum+=v[M.ColIndx[j]]*M.val[j];
@@ -287,7 +287,7 @@ std::vector<std::complex<T>> operator * (const Matrix<std::complex<T>,S> & M,con
     }
     if constexpr (S==StorageOrdering::col){
         if(M.is_compress()){
-            std::vector<std::complex<T>> prod(M.nrow);// messo 5 nrow finche non imolemento nrow e ncol in privat member
+            std::vector<std::complex<T>> prod(M.nrow);
             for(unsigned int i=0; i<M.RowPoint.size()-1; i++){
                 for(unsigned int j=M.RowPoint[i]; j<M.RowPoint[i+1]; j++)
                     prod[M.ColIndx[j]]+=M.val[j] *v[i]; // i indice colonna, Colindx[j]= riga, j scorre Index e quindi val
@@ -320,6 +320,8 @@ std::ostream & operator<<(std::ostream &stream, Matrix<T,S> &M){
     return stream;
 }
 
+
+//stream operator per matrix in uncompress form utile per debug
 template <class T, StorageOrdering S>
 std::ostream & operator<<(std::ostream &stream, const Matrix<T,S> &M){
     // per uncompress form sia row sia col

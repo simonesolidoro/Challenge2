@@ -3,12 +3,13 @@
 
 using namespace algebra;
 
-//costruttore
+//costruttore da map con comparatore cmp
 template <class T, StorageOrdering S>
 Matrix<T,S>::Matrix(std::map<std::array<std::size_t,2>,T,cmp<S>> D):Dati(D),nze(D.size()){
     resizeGen();
 }
 
+//costruttore da map standard
 template <class T, StorageOrdering S>
 Matrix<T,S>::Matrix(std::map<std::array<std::size_t,2>,T> M){
     for (auto it=M.begin(); it!=M.end(); it++ ){
@@ -21,7 +22,7 @@ Matrix<T,S>::Matrix(std::map<std::array<std::size_t,2>,T> M){
 template<class T, StorageOrdering S>
 Matrix<T,S>::Matrix(const unsigned int row, const unsigned int col):nrow(row),ncol(col){}
 
-//call operator non cons.   
+//call operator non const   
 template <class T, StorageOrdering S>
 T& Matrix<T,S>::operator() (const std::size_t i,const std::size_t j){
     if (is_compress()){
@@ -48,8 +49,7 @@ T& Matrix<T,S>::operator() (const std::size_t i,const std::size_t j){
         resizeNewEl(i,j);
         return Dati[{i,j}];        // cosi se poszione(i,j) non presente viene aggiunta
         }
-    return Dati.at({i,j});         //PROBLEMA: se in main chiamo M(i,j) con i,j non presenti ma solo per lettura viene aggiunto {{i,j},0} a Dati
-                                  //SOLUZIONE: fare call op() per lettura e subscri op [] per sovrascrivere o aggiungere 
+    return Dati.at({i,j});         
     
 } 
 
@@ -121,9 +121,9 @@ void Matrix<T,S>::resizeGen(){
 template<class T, StorageOrdering S>
 void Matrix<T,S>::resizeNewEl(std::size_t i, std::size_t j){
     if(i>=nrow)
-        nrow=i+1;
+        nrow=(i+1);
     if(j>=ncol)
-        ncol=j+1;
+        ncol=(j+1);
     nze++;
 }
 
@@ -214,18 +214,16 @@ void Matrix<T,S>::read(const std::string& filename){
     std::string line;
         while (std::getline(file, line)) {
         if (line[0] == '%') {
-            // Skip comments
+            // saltare commenti
             continue;
         }
 
         if (!rigaInfo) {
-            std::istringstream iss(line);
-            iss >> nrow >> ncol; // non copiato numero non zero element perche quando aggiunge op () aggiunge +1 a nze
-            rigaInfo = true;
+            rigaInfo = true; // saltare riga info nrow ncol nze
         } else {
-            std::istringstream iss(line);
-            iss >> i >> j >> val;
-            this->operator()(i,j) = val;
+            std::istringstream lin(line);
+            lin >> i >> j >> val;
+            this->operator()((i-1),(j-1)) = val; // indici -1 perchè in Matrix implementata si parte da 0, ma in matrix market format parte da 1
         }
     }
 }
@@ -242,6 +240,7 @@ void Matrix<T,S>::read(const std::string& filename){
 
 
 
+// print di vettori di rappresentazione compressa
 template <class T, StorageOrdering S>
 void Matrix<T,S>::printvett(){
     std::cout<<"colindx: ";
