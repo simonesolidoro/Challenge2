@@ -8,8 +8,7 @@
 #include <complex>
 #include <fstream>
 #include <iomanip>
-//#include <any>
-#include<variant>
+
 namespace algebra{
     enum StorageOrdering{ row,col};
     
