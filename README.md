@@ -34,9 +34,7 @@ membri pubblici:
     
 _________________________________________________________________________________________________________________________________________________________________________________________________________
 
-Utilizzo Makefile:  make --> genera eseguibile ./main che legge matrice_intestata e la moltiplica per vettore V=[2 2 2... 2] e con
-
-                             Chrono utility valuta performance di M*V con M in row-major/col-major ordine e compress/uncompress form.
+Utilizzo Makefile:  make --> genera eseguibile ./main che legge matrice_intestata e la moltiplica per vettore V=[2 2 2... 2] e con Chrono utility valuta performance di M*V con M in row-major/col-major ordine e compress/uncompress form.
                              
                     make clean
                     
