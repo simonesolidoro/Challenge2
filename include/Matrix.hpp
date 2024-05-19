@@ -1,6 +1,6 @@
 #ifndef MATRIX_HPP
 #define MATRIX_HPP
-
+// clang-format off
 #include<iostream>
 #include<array>
 #include<map>
@@ -11,12 +11,14 @@
 
 namespace algebra{
     enum StorageOrdering{ row,col};
-    
+    //@note Take the habit of using doxygena for commentsing classes and functions
     // nuovo comparison operator per map Dati
     template<StorageOrdering S>
     struct cmp{
         bool operator() (std::array<std::size_t,2> const & A, std::array<std::size_t,2> const & B)const{
-            if(S==StorageOrdering::col){           
+            if(S==StorageOrdering::col){     
+                //@note A little trick that is also quite efficient, using tie:
+                // return std::tie(A[1],A[0])<std::tie(B[1],B[0]);      
                 if(A[1]<B[1])
                     return true;
                 else if((A[1]==B[1]) & (A[0]<B[0]))
@@ -41,9 +43,14 @@ namespace algebra{
         public:
     
             // costruttore con map con cmp come comparison operator
+            //@note pass the map as const & to avoid useless copies.
             Matrix(std::map<std::array<std::size_t,2>,T,cmp<S>>);
 
             // costruttore con map normale
+            // @note you could have made a template constructor ans used if constexpr
+            // to separate the two implementations
+            // template<StorageOrdering U>
+            // Matrix(std::map<std::array<std::size_t,2>,T,cmp<U>> D);
             Matrix(std::map<std::array<std::size_t,2>,T>);
 
             // costruttore con size matrix(nrow,ncol)
@@ -59,6 +66,7 @@ namespace algebra{
             T operator() (const std::size_t ,const std::size_t ) const;
            
             // estrae riga k se presente, altrimenti ridà mappa vuota
+            //@note Why no estrai_riga, to make things clearer?
             std::map<std::array<std::size_t,2>,T> estrai(const std::size_t ) const;
 
             // resize nze ncol nrow 
@@ -80,6 +88,7 @@ namespace algebra{
             bool is_compress()const;
 
             //scalar product matrice vettore
+          
             template <class U, StorageOrdering Z>
             friend std::vector<U> operator * (const Matrix<U,Z> &,const std::vector<U> &);
 
@@ -210,6 +219,11 @@ std::vector<std::complex<T>> operator * (const Matrix<std::complex<T>,S> & M,con
       return prod;
     }
 }
+
+//@note Some code duplication here, you could have made the code more generic by declaring a template of the form
+// template<class T, class U, StorageOrdering S>
+// std::vector<U> operator * (const Matrix<T,S> & M, const std::vector<U> & v){
+// and then sort out the cases with if constexpr and type traits. You avoid reapeating the same code twice.
 
 template <class T, StorageOrdering S>
 std::vector<std::complex<T>> operator * (const Matrix<T,S> & M,const std::vector<std::complex<T>> & v){

@@ -1,8 +1,8 @@
-#include<iostream>
-#include"Matrix.cpp"
-#include<iterator>
+#include "Matrix.cpp"
 #include "chrono.hpp"
-
+#include <iostream>
+#include <iterator>
+// clang-format off
 using namespace algebra;
 
 int main(){
@@ -47,6 +47,6 @@ int main(){
     std::cout<< "Colum-major uncompress: "<<tempoCU<<std::endl;
     std::cout<< "Column-major compress: "<<tempoCC<<std::endl;
     // risultati confermano compress piu veloce sia in row sia in col
-
+//@note You could have tested also the complex version to verify that it works fine.
     return 0;
 }
