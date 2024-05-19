@@ -1,6 +1,7 @@
-#include"Matrix.hpp"
-
-
+#include "Matrix.hpp"
+// clang-format off
+//@note even if you called *.cpp this is a header file since it contains template definitions.
+// Better call it Matrix_impl.hpp and include id at the end of MAtrix.hpp
 using namespace algebra;
 
 //costruttore da map con comparatore cmp
